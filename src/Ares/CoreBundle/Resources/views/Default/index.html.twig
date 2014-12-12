@@ -1,0 +1,44 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<h1>All Tasks</h1>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Deadline</th>
+            <th>Estimated time</th>
+            <th>State</th>
+            <th>Users</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+                <tr>
+                    <td>{{ task.id }}</td>
+                    <td>{{ task.name }}</td>
+                    <td>{{ task.description }}</td>
+                    <td>{{ task.deadline | date   }}</td>
+                    <td>{{ task.estimatedtime }}</td>
+                    <td>{{ task.state }}</td>
+                    <td>
+                        {% for user in task.users %}
+                            {{ user.username }},
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_task_show', { 'id': task.id }) }}">show</a>
+                        <a href="{{ path('admin_task_edit', { 'id': task.id }) }}">edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+

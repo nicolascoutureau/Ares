@@ -1,0 +1,188 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>My Tasks</h1>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Deadline</th>
+            <th>Estimated time</th>
+            <th>Time Spent</th>
+            <th>State</th>
+            <th>Users</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for usertask in usertasks %}
+            <tr>
+                <td>{{ usertask.task.id }}</td>
+                <td>{{ usertask.task.name }}</td>
+                <td>{{ usertask.task.description }}</td>
+                <td>{{ usertask.task.deadline | date   }}</td>
+                <td>{{ usertask.task.estimatedtime }}</td>
+                <td>time spent</td>
+                <td>{{ usertask.task.state }}</td>
+                <td>
+                    {% for user in usertask.task.users %}
+                        {{ user.username }},
+                    {% endfor %}
+                </td>
+                <td><a href="#" class="selectBtn" data-taskName="{{ usertask.task.name }}" data-taskId="{{ usertask.task.id }}">Select task</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="chronometer">
+        <h2>Chronometer</h2>
+        <p class="currentTaskName"></p>
+        <p class="currentTaskId" style="display: none"></p>
+        <div class="time">00.00.00</div>
+        <a href="" class="startBtn">Start</a>
+        <a href="" class="stopBtn">Stop</a>
+    </div>
+
+{% endblock %}
+
+
+{% block javascripts %}
+<script>
+    jQuery(document).ready(function($) {
+
+        var taskSelected = false,
+            taskLaunched = false,
+            interval = 1000,
+            timer = null;
+
+        $('.selectBtn').on('click', function(e){
+            e.preventDefault();
+
+            if(taskLaunched){
+                console.log('Stoppez la tache en cours avant d\'en selectionner une autre');
+                return false;
+            }
+
+            var taskName = $(this).attr('data-taskName');
+            var taskId = $(this).attr('data-taskId');
+
+            $('.currentTaskName').html(taskName);
+            $('.currentTaskId').html(taskId);
+
+            // Requete ajax pour récuperer le temps déja travaillé
+            $.ajax({
+                type: "GET",
+                url: '/app_dev.php/chronometer/timespent/' + taskId ,
+                dataType: "json",
+                success: function(data) {
+                    $('.time').html(secondsToTime(data.timespent))
+                    taskSelected = true;
+                }
+            });
+        });
+
+
+        $('.startBtn').on('click', function(e){
+            e.preventDefault();
+            if(taskSelected){
+                console.log('start');
+                startChrono();
+                taskLaunched = true;
+
+
+
+                // Lance le timer
+                if (timer !== null) return;
+                value = timeToSeconds($('.time').html());
+                timer = setInterval(function () {
+                    value = Math.round(value);
+                    $('.time').html(secondsToTime(value));
+                    if(value%5 === 0){
+                        console.log('save');
+                        updateChrono();
+                    }
+
+                    value++;
+                }, interval);
+
+
+
+
+
+            }else{
+                alert('Selectionnez une tache');
+            }
+        });
+
+        $('.stopBtn').on('click', function(e){
+            e.preventDefault();
+            if(taskSelected && taskLaunched){
+                console.log('stop');
+                updateChrono();
+                clearInterval(timer);
+                timer = null;
+                taskLaunched = false;
+            }else{
+                alert('Commencez une tache');
+            }
+        })
+
+
+        // Function qui démarre le chrono
+        var startChrono = function(){
+            $.ajax({
+                type: "POST",
+                url: '/app_dev.php/chronometer/start',
+                data: {
+                    'taskId' : $('.currentTaskId').html()
+                },
+                dataType: "json",
+                success: function(response) {
+                    console.log(response);
+                }
+            });
+        };
+
+        // Function qui update le chrono
+        var updateChrono = function(){
+            $.ajax({
+                type: "POST",
+                url: '/app_dev.php/chronometer/update',
+                data: {
+                    'taskId' : $('.currentTaskId').html()
+                },
+                dataType: "json",
+                success: function(response) {
+                    console.log(response);
+                }
+            });
+        };
+
+        var secondsToTime = function(s) {
+            var h = Math.floor(s/3600); //Get whole hours
+            s -= h*3600;
+            var m = Math.floor(s/60); //Get remaining minutes
+            s -= m*60;
+            return h+":"+(m < 10 ? '0'+m : m)+":"+(s < 10 ? '0'+s : s); //zero padding on minutes and seconds
+        }
+
+        var timeToSeconds = function(time){
+            time = time.split(':');
+
+            console.log(time[1]);
+            return( parseInt(time[0]*3600) + parseInt(time[1]*60) + parseInt(time[2])) ;
+        }
+
+        console.log(timeToSeconds("0:02:31"));
+
+
+    });
+</script>
+
+{% endblock %}
+
+

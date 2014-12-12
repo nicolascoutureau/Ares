@@ -1,0 +1,16 @@
+core_admin:
+    resource: "@AresCoreBundle/Controller/AdminController.php"
+    type:     annotation
+    prefix:   admin/
+
+core_user:
+    resource: "@AresCoreBundle/Controller/UserController.php"
+    type:     annotation
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+core_chronometer:
+    resource: "@AresCoreBundle/Controller/ChronometerController.php"
+    type:     annotation
+    prefix:   chronometer/

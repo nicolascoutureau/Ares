@@ -1,0 +1,60 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Task</h1>
+
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ task.id }}</td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>{{ task.name }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ task.description }}</td>
+        </tr>
+        <tr>
+            <th>Deadline</th>
+            <td>{{ task.deadline|date('Y-m-d H:i:s') }}</td>
+        </tr>
+        <tr>
+            <th>Datecreated</th>
+            <td>{{ task.datecreated|date('Y-m-d H:i:s') }}</td>
+        </tr>
+        <tr>
+            <th>Estimated_time</th>
+            <td>{{ task.estimatedtime }}</td>
+        </tr>
+        <tr>
+            <th>State</th>
+            <td>{{ task.state }}</td>
+        </tr>
+        <tr>
+            <th>Users</th>
+            <td>
+            {% for user in task.users %}
+                {{ user.username }},
+            {% endfor %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('admin_task_index') }}">
+                Back to the list
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_task_edit', { 'id': task.id }) }}">
+                Edit
+            </a>
+        </li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
+{% endblock %}
