@@ -80,7 +80,7 @@ class Task
             }
         }
         return $users;
-    }
+    }    
     public function setUsers($users)
     {
         foreach($users as $u)
@@ -88,6 +88,7 @@ class Task
             $ut = new Usertask();
             $ut->setTask($this);
             $ut->setUser($u);
+            $ut->setAssignation(true);
             $this->addUsertask($ut);
         }
     }
@@ -101,8 +102,15 @@ class Task
     }
     public function removeUsertask($usertask)
     {
-        return $this->usertasks->removeElement($usertask);
+//        return $this->usertasks->removeElement($usertask);
+//        \Doctrine\Common\Util\Debug::dump($usertask->getAssignation());
+//        die;
+        $usertask->setAssignation(false);
+        
+        
+        
     }
+    
     /**
      * @param mixed $datecreated
      */

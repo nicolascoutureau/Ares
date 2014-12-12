@@ -150,10 +150,18 @@ class AdminController extends Controller
 
         if(!empty($previousCollections)){
 
-
+            
+//            \Doctrine\Common\Util\Debug::dump($previousCollections);
+//            die;
 
             foreach($previousCollections as $pc){
-                $previousUsersArray[] = $pc->getUser()->getId();
+                
+                \Doctrine\Common\Util\Debug::dump($pc->getAssignation());
+                die;
+                        
+                if ($pc->getAssignation()) {
+                    $previousUsersArray[] = $pc->getUser()->getId();
+                }
             }
 
             $requestArray = $request->request->all();
@@ -163,7 +171,15 @@ class AdminController extends Controller
             // Enleve les users deja enregistrés qui ne sont pas dans la requete
             foreach($previousCollections as $pc){
                 if(!in_array($pc->getUser()->getId(),$requestArrayClone)){
+                    
+                    
                     $entity->removeUsertask($pc);
+                    
+                    
+                    
+                    
+                    
+                    
                 }
             }
 

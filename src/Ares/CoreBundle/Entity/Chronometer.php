@@ -37,6 +37,7 @@ class Chronometer
     public function __construct()
     {
         $this->startdate = new \Datetime();
+        $this->stopdate = new \Datetime();
     }
     /**
      * @param mixed $usertask

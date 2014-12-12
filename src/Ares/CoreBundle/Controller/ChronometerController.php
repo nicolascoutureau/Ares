@@ -1,5 +1,6 @@
 <?php
 namespace Ares\CoreBundle\Controller;
+use Ares\CoreBundle\Entity\Chronometer;
 use Ares\CoreBundle\Entity\Usertask;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -21,19 +22,18 @@ class ChronometerController extends Controller
         // Récupere la task id
         $taskId = (int) $request->request->get('taskId');
 
-        // Récupere la tache
-        $task = $em->getRepository('AresCoreBundle:Task')->findOneById($taskId);
-
         // Récupere l'utilisateur courrant
-        $currentUser= $this->get('security.context')->getToken()->getUser();
+        $currentUser= $this->get('security.context')->getToken()->getUser()->getId();
 
-        // Créé une nouvelle usertask
-        $usertask = new usertask();
-        $usertask->setUser($currentUser)
-                 ->setTask($task);
+        // Récupere le usertask
+        $currentUsertask = $em->getRepository('AresCoreBundle:Usertask')->myFindByUserAndTask($currentUser,$taskId);
+
+        // Créé un nouveau chrono avec l'id du bon usertask
+        $chronometer = new chronometer();
+        $chronometer->setUsertask($currentUsertask[0]);
 
         // Enregistre la usertask
-        $em->persist($usertask);
+        $em->persist($chronometer);
         $em->flush();
 
         $response = array("code" => 200, "success" => true, "data" => $taskId);
@@ -43,6 +43,7 @@ class ChronometerController extends Controller
 
     /**
      * @Route("/update", name="chronometer_update")
+     * Todo : modifier usertask par chronometer
      */
     public function updateAction(Request $request)
     {
@@ -84,17 +85,46 @@ class ChronometerController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $usertaskRepository = $em->getRepository('AresCoreBundle:Usertask');
-        $usertasks = $usertaskRepository->findByTask($id);
+        $chronometerRepository = $em->getRepository('AresCoreBundle:Chronometer');
+
+        $chronometers = $chronometerRepository->myFindByTask($id);
 
         $timespent = 0;
-        foreach($usertasks as $usertask){
-           $timespent+= $usertask->getStopdate()->getTimestamp() - $usertask->getStartdate()->getTimestamp();
+        foreach ($chronometers as $chronometer) {
+            $timespent+= $chronometer->getStopdate()->getTimestamp() - $chronometer->getStartdate()->getTimestamp();
+
         }
 
         // Réponse
         $response = array("code" => 200, "success" => true, "timespent" => $timespent);
         return new Response(json_encode($response));
+    }
+
+    /**
+     * Retourne le temps travailler par tache
+     * @Route("/test", name="test")
+     */
+    public function testAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $chronometerRepository = $em->getRepository('AresCoreBundle:Chronometer');
+
+        $chronometers = $chronometerRepository->myFindByTask(3);
+
+        $timespent = 0;
+        foreach ($chronometers as $chronometer) {
+            $timespent+= $chronometer->getStopdate()->getTimestamp() - $chronometer->getStartdate()->getTimestamp();
+
+        }
+
+
+        echo '<pre>';
+        \Doctrine\Common\Util\Debug::dump($timespent);
+        echo '</pre>';
+        die();
+
+
     }
 
 }
