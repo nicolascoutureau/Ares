@@ -2,3 +2,11 @@ services:
 #    ares_core.example:
 #        class: Ares\CoreBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
+
+    redirect.after.login:
+        class: Ares\CoreBundle\Redirection\AfterLoginRedirection
+        arguments: [@router]
+ 
+    redirect.after.logout:
+        class: Ares\CoreBundle\Redirection\AfterLogoutRedirection
+        arguments: [@router, @security.context]

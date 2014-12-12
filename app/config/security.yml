@@ -17,7 +17,13 @@ security:
             form_login:
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider
-            logout:       true
+                login_path: /login
+                check_path: /login_check
+                success_handler: redirect.after.login
+            logout:   
+                path: /logout
+                target: /    
+                success_handler: redirect.after.logout
             anonymous:    true
 
     access_control:
