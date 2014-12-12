@@ -10,3 +10,7 @@
 /bin/
 /composer.phar
 /.idea/
+/nbproject/
+/web/app_dev.php
+/web/config.php
+/composer.lock
