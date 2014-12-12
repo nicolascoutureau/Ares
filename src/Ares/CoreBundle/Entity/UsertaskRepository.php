@@ -56,4 +56,15 @@ class UsertaskRepository extends EntityRepository
         ;
         return $qb->getQuery()->getResult();
     }
+
+    public function myFindByUserAndTask($userId, $taskId)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('ut')
+           ->from('AresCoreBundle:usertask','ut')
+           ->where("ut.task = $taskId")
+           ->andWhere("ut.user = $userId");
+
+        return $qb->getQuery()->setMaxResults(1)->getResult();
+    }
 }
