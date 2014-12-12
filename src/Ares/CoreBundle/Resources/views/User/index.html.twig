@@ -42,7 +42,7 @@
         <h2>Chronometer</h2>
         <p class="currentTaskName"></p>
         <p class="currentTaskId" style="display: none"></p>
-        <div class="time">00.00.00</div>
+        <div class="time">0:00:00</div>
         <a href="" class="startBtn">Start</a>
         <a href="" class="stopBtn">Stop</a>
     </div>
@@ -73,13 +73,14 @@
             $('.currentTaskName').html(taskName);
             $('.currentTaskId').html(taskId);
 
+            taskSelected = true;
             // Requete ajax pour récuperer le temps déja travaillé
             $.ajax({
                 type: "GET",
                 url: '/app_dev.php/chronometer/timespent/' + taskId ,
                 dataType: "json",
                 success: function(data) {
-                    $('.time').html(secondsToTime(data.timespent))
+                    $('.time').html(secondsToTime(data.timespent));
                     taskSelected = true;
                 }
             });
@@ -92,8 +93,6 @@
                 console.log('start');
                 startChrono();
                 taskLaunched = true;
-
-
 
                 // Lance le timer
                 if (timer !== null) return;
@@ -108,10 +107,6 @@
 
                     value++;
                 }, interval);
-
-
-
-
 
             }else{
                 alert('Selectionnez une tache');
@@ -167,8 +162,13 @@
             s -= h*3600;
             var m = Math.floor(s/60); //Get remaining minutes
             s -= m*60;
+
+            console.log(h + ','+  m + ',' + s);
+
             return h+":"+(m < 10 ? '0'+m : m)+":"+(s < 10 ? '0'+s : s); //zero padding on minutes and seconds
+
         }
+
 
         var timeToSeconds = function(time){
             time = time.split(':');
@@ -177,7 +177,6 @@
             return( parseInt(time[0]*3600) + parseInt(time[1]*60) + parseInt(time[2])) ;
         }
 
-        console.log(timeToSeconds("0:02:31"));
 
 
     });
