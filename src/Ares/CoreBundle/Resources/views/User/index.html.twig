@@ -25,7 +25,7 @@
                 <td>{{ usertask.task.description }}</td>
                 <td>{{ usertask.task.deadline | date   }}</td>
                 <td>{{ usertask.task.estimatedtime }}</td>
-                <td>time spent</td>
+                <td>{{ usertask.task.timespent }}</td>
                 <td>{{ usertask.task.state }}</td>
                 <td>
                     {% for user in usertask.task.users %}

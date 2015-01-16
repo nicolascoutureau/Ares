@@ -34,7 +34,7 @@ class Usertask
   /**
    * @ORM\Column(name="assignation", type="boolean")
    */    
-    private $assignation;
+//    private $assignation;
     
     public function __construct() {
         $this->chronometers = new ArrayCollection();
@@ -86,9 +86,7 @@ class Usertask
      */
     public function setUser($user)
     {
-//        if ($this->assignation) {
             $this->user = $user;
-//        }
     }
     /**
      * @return mixed
@@ -102,26 +100,5 @@ class Usertask
 
 
 
-    /**
-     * Set assignation
-     *
-     * @param boolean $assignation
-     * @return Usertask
-     */
-    public function setAssignation($assignation)
-    {
-        $this->assignation = $assignation;
 
-        return $this;
-    }
-
-    /**
-     * Get assignation
-     *
-     * @return boolean 
-     */
-    public function getAssignation()
-    {
-        return $this->assignation;
-    }
 }

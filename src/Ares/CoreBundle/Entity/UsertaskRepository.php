@@ -10,20 +10,20 @@ use Doctrine\ORM\EntityRepository;
 class UsertaskRepository extends EntityRepository
 {
  
-    public function myFindUsersAssigned(){
-        $qb = $this->_em->createQueryBuilder();
-        $qb->select('ut.user')
-            ->from('AresCoreBundle:usertask', 'ut')
-            ->where("ut.designation = true")
-            ->groupBy('ut.task')
-        ;
-        
-        
-     
-        
-        
-        return $qb->getQuery()->getResult();        
-    }
+//    public function myFindUsersAssigned(){
+//        $qb = $this->_em->createQueryBuilder();
+//        $qb->select('ut.user')
+//            ->from('AresCoreBundle:usertask', 'ut')
+//            ->where("ut.designation = true")
+//            ->groupBy('ut.task')
+//        ;
+//        
+//        
+//     
+//        
+//        
+//        return $qb->getQuery()->getResult();        
+//    }
     
     public function myFindByUserId($id)
     {

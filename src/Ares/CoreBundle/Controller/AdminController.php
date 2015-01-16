@@ -150,24 +150,21 @@ class AdminController extends Controller
 
         if(!empty($previousCollections)){
 
-            
-//            \Doctrine\Common\Util\Debug::dump($previousCollections);
-//            die;
-
             foreach($previousCollections as $pc){
+//                \Doctrine\Common\Util\Debug::dump($pc->getUser());
                 
-                \Doctrine\Common\Util\Debug::dump($pc->getAssignation());
-                die;
+                $previousUsersArray[] = $pc->getUser()->getId();
                         
-                if ($pc->getAssignation()) {
-                    $previousUsersArray[] = $pc->getUser()->getId();
-                }
             }
 
             $requestArray = $request->request->all();
+            
             $requestArrayClone = $requestArray['ares_corebundle_task']['users'];
             $requestArray['ares_corebundle_task']['users'] = array();
 
+            
+            
+            
             // Enleve les users deja enregistrés qui ne sont pas dans la requete
             foreach($previousCollections as $pc){
                 if(!in_array($pc->getUser()->getId(),$requestArrayClone)){
