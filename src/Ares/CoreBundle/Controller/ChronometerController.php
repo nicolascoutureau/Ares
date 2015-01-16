@@ -43,7 +43,6 @@ class ChronometerController extends Controller
 
     /**
      * @Route("/update", name="chronometer_update")
-     * Todo : modifier usertask par chronometer
      */
     public function updateAction(Request $request)
     {
@@ -57,25 +56,19 @@ class ChronometerController extends Controller
         $currentUser= $this->get('security.context')->getToken()->getUser();
 
         // Récupere la derniere usertask avec la task et l'utilistateur courrant
-        $usertaskRepository = $em->getRepository('AresCoreBundle:Usertask');
-        $usertask = $usertaskRepository->findBy
-            (array('task' => $taskId,'user'=>$currentUser->getId()),
-            array('startdate' => 'desc'),
-            1,
-            0)[0];
+        $chronometerRepository = $em->getRepository('AresCoreBundle:Chronometer');
+        $chronometer = $chronometerRepository->myFindChronometerByUserAndTask($currentUser->getId(), $taskId)[0];
 
         // Update la date de fin
-        $usertask->setStopdate(new \Datetime());
-
+        $chronometer->setStopdate(new \Datetime());
         // Persiste
-        $em->persist($usertask);
+        $em->persist($chronometer);
         $em->flush();
 
         //reponse
         $response = array("code" => 200, "success" => true, "data" => 'data');
         return new Response(json_encode($response));
     }
-
 
     /**
      * Retourne le temps travailler par tache
@@ -92,7 +85,6 @@ class ChronometerController extends Controller
         $timespent = 0;
         foreach ($chronometers as $chronometer) {
             $timespent+= $chronometer->getStopdate()->getTimestamp() - $chronometer->getStartdate()->getTimestamp();
-
         }
 
         // Réponse

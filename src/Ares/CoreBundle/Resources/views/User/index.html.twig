@@ -38,7 +38,7 @@
         </tbody>
     </table>
 
-    <div class="chronometer">
+    <div class="chronometer" id="draggable">
         <h2>Chronometer</h2>
         <p class="currentTaskName"></p>
         <p class="currentTaskId" style="display: none"></p>
@@ -49,11 +49,24 @@
 
 {% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+{%  endblock %}
 
 {% block javascripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
 <script>
+
+
     jQuery(document).ready(function($) {
 
+        // Draggable
+        $(function() {
+            $( "#draggable" ).draggable();
+        });
+
+        // Taches
         var taskSelected = false,
             taskLaunched = false,
             interval = 1000,
@@ -74,6 +87,7 @@
             $('.currentTaskId').html(taskId);
 
             taskSelected = true;
+
             // Requete ajax pour récuperer le temps déja travaillé
             $.ajax({
                 type: "GET",
@@ -166,7 +180,6 @@
             console.log(h + ','+  m + ',' + s);
 
             return h+":"+(m < 10 ? '0'+m : m)+":"+(s < 10 ? '0'+s : s); //zero padding on minutes and seconds
-
         }
 
 
