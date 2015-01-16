@@ -41,6 +41,14 @@
             {{ form_widget(edit_form.estimated_time, { 'attr': {'class': 'form-control'} }) }}
         </div>
     </div>
+    {# timespent #}
+    <div class="form-group">
+        {{ form_errors(edit_form.timespent) }}
+        {{ form_label(edit_form.timespent, "Temps passé",{ 'label_attr': {'class': 'col-lg-2 col-sm-2 control-label'} }) }}
+        <div class="col-lg-10">
+            {{ form_widget(edit_form.timespent, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+    </div>    
     {# Users #}
     <div class="form-group">
         {{ form_label(edit_form.name, "Utilisateurs sur cette tache",{ 'label_attr': {'class': 'col-lg-2 col-sm-2 control-label'} }) }}

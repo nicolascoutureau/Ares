@@ -30,6 +30,12 @@ class Usertask
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
+    
+  /**
+   * @ORM\Column(name="assignation", type="boolean")
+   */    
+//    private $assignation;
+    
     public function __construct() {
         $this->chronometers = new ArrayCollection();
     }
@@ -80,15 +86,19 @@ class Usertask
      */
     public function setUser($user)
     {
-        $this->user = $user;
+            $this->user = $user;
     }
     /**
      * @return mixed
      */
     public function getUser()
     {
-        return $this->user;
+        
+            return $this->user;
+        
     }
+
+
 
 
 }

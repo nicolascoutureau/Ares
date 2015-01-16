@@ -11,6 +11,7 @@
             <th>Description</th>
             <th>Deadline</th>
             <th>Estimated time</th>
+            <th>Time Spent</th>
             <th>State</th>
             <th>Users</th>
             <th>Actions</th>
@@ -24,6 +25,7 @@
                     <td>{{ task.description }}</td>
                     <td>{{ task.deadline | date   }}</td>
                     <td>{{ task.estimatedtime }}</td>
+                    <td>time spent</td>
                     <td>{{ task.state }}</td>
                     <td>
                         {% for user in task.users %}
