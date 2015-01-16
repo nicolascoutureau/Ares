@@ -1,0 +1,14 @@
+/*chronometre*/
+.chronometer{
+    background: white;
+    padding:10px 20px;
+    border-radius: 10px;
+    position: absolute;
+    -moz-box-shadow: 1px 1px 10px 0px #cfcfcf;
+    -webkit-box-shadow: 1px 1px 10px 0px #cfcfcf;
+    -o-box-shadow: 1px 1px 10px 0px #cfcfcf;
+    box-shadow: 1px 1px 10px 0px #cfcfcf;
+    filter:progid:DXImageTransform.Microsoft.Shadow(color=#cfcfcf, Direction=134, Strength=10);
+    cursor: move;
+    border: 1px solid lightgrey;
+}
