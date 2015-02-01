@@ -12,3 +12,7 @@
     cursor: move;
     border: 1px solid lightgrey;
 }
+
+.navbar-brand {
+  font-weight: bold;
+}
