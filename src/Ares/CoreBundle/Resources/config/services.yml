@@ -10,3 +10,7 @@ services:
     redirect.after.logout:
         class: Ares\CoreBundle\Redirection\AfterLogoutRedirection
         arguments: [@router, @security.context]
+        
+    ares_core.datetime:
+        class: Ares\CoreBundle\Services\DateTime
+    
