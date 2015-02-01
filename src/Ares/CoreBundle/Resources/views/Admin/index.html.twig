@@ -23,13 +23,13 @@
                     <td>{{ task.id }}</td>
                     <td>{{ task.name }}</td>
                     <td>{{ task.description }}</td>
-                    <td>{{ task.deadline | date   }}</td>
+                    <td>{{ task.deadline | date('d/m/Y')   }}</td>
                     <td>{{ task.estimatedtime }}</td>
-                    <td>time spent</td>
-                    <td>{{ task.state }}</td>
+                    <td>{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': task.id})) }}</td>
+                    <td>{{ task.state | title }}</td>
                     <td>
                         {% for user in task.users %}
-                            {{ user.username }},
+                            {{ user.username | title }}{% if loop.last is same as(false) %},{% endif %}
                         {% endfor %}
                     </td>
                     <td>

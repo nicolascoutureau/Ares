@@ -50,11 +50,15 @@ class Task
      * @ORM\Column(name="timespent", type = "integer")
      */
     private $timespent;
+    
     /**
      * @ORM\OneToMany(targetEntity="Ares\CoreBundle\Entity\Usertask", mappedBy="task", cascade={"all"} , orphanRemoval=true)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $usertasks;
+    
     private $users;
+    
     public function __construct()
     {
         $this->datecreated = new \Datetime();
@@ -70,26 +74,49 @@ class Task
     {
         return $this->usertasks;
     }
+    
     public function getUsers()
     {
         $users = new ArrayCollection();
         foreach($this->usertasks as $ut)
         {
-            if(!$users->contains($ut->getUser())){
-                $users[] = $ut->getUser();
-            }
+//          dump($ut->getAssignation());
+//          dump($ut->getUser());
+          
+          if ($ut->getAssignation() === true) {
+            $users[] = $ut->getUser();
+          }
+          
+//            if(!$users->contains($ut->getUser())){
+//              
+//                $users[] = $ut->getUser();
+//            }
         }
+//        die;
+        
+//        dump($users);
+//        die;
         return $users;
-    }    
+    }   
+    
     public function setUsers($users)
     {
+      $arrayExistedUserTasks = array();
+      
+      foreach ($this->getUsertasks() as $ut) {
+        $arrayExistedUserTasks[] = $ut->getUser()->getId();
+      }
+      
         foreach($users as $u)
         {
+          if (!in_array($u->getId(), $arrayExistedUserTasks)) {
             $ut = new Usertask();
             $ut->setTask($this);
             $ut->setUser($u);
-//            $ut->setAssignation(true);
-            $this->addUsertask($ut);
+            $this->addUsertask($ut);            
+          }
+          
+
         }
     }
     public function getTask()
@@ -103,9 +130,10 @@ class Task
     public function removeUsertask($usertask)
     {
         return $this->usertasks->removeElement($usertask);
+        
 //        \Doctrine\Common\Util\Debug::dump($usertask->getAssignation());
 //        die;
-//        $usertask->setAssignation(false);
+//      $usertask->setAssignation(false);
         
         
         

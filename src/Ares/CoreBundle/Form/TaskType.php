@@ -30,15 +30,8 @@ class TaskType extends AbstractType
             ->add('users', 'entity', array(
                 'class'    => 'AresCoreBundle:User',
                 'property' => 'username',
-                'multiple' => true))
-            ->add('timespent', 'text')
-//            ->add('users', 'entity', array(
-//                'class'    => 'AresCoreBundle:User',
-//                'property' => 'username',
-//                'query_builder' => function(\Ares\CoreBundle\Entity\UserRepository $repo) {
-//                  return $repo->myFindUsersAssigned();
-//                },                
-//                'multiple' => true))                
+                'multiple' => true))               
+//            ->add('timespent', 'text')               
         ;
         
 

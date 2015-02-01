@@ -15,16 +15,19 @@ class Usertask
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
     /**
      * @ORM\OneToMany(targetEntity="Ares\CoreBundle\Entity\Chronometer", mappedBy="usertask")
      * @ORM\JoinColumn(nullable=true)
      */
     private $chronometers;
+    
     /**
      * @ORM\ManyToOne(targetEntity="Ares\CoreBundle\Entity\Task", inversedBy="usertasks")
      * @ORM\JoinColumn(name="task_id", referencedColumnName="id", nullable=false)
      */
     private $task;
+    
     /**
      * @ORM\ManyToOne(targetEntity="Ares\CoreBundle\Entity\User", inversedBy="usertasks")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
@@ -34,7 +37,7 @@ class Usertask
   /**
    * @ORM\Column(name="assignation", type="boolean")
    */    
-//    private $assignation;
+    private $assignation = true;
     
     public function __construct() {
         $this->chronometers = new ArrayCollection();
@@ -101,4 +104,27 @@ class Usertask
 
 
 
+
+    /**
+     * Set assignation
+     *
+     * @param boolean $assignation
+     * @return Usertask
+     */
+    public function setAssignation($assignation)
+    {
+        $this->assignation = $assignation;
+
+        return $this;
+    }
+
+    /**
+     * Get assignation
+     *
+     * @return boolean 
+     */
+    public function getAssignation()
+    {
+        return $this->assignation;
+    }
 }

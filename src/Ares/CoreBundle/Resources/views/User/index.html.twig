@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>My Tasks</h1>
+    <h1>My tasks</h1>
 
     <table class="table table-striped">
         <thead>
@@ -23,13 +23,14 @@
                 <td>{{ usertask.task.id }}</td>
                 <td>{{ usertask.task.name }}</td>
                 <td>{{ usertask.task.description }}</td>
-                <td>{{ usertask.task.deadline | date   }}</td>
+                <td>{{ usertask.task.deadline | date('d/m/Y') }}</td>
                 <td>{{ usertask.task.estimatedtime }}</td>
-                <td>{{ usertask.task.timespent }}</td>
-                <td>{{ usertask.task.state }}</td>
+                <td>{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id})) }}
+                </td>
+                <td>{{ usertask.task.state | title }}</td>
                 <td>
                     {% for user in usertask.task.users %}
-                        {{ user.username }},
+                      {{ user.username | title }}{% if loop.last is same as(false) %},{% endif %}
                     {% endfor %}
                 </td>
                 <td><a href="#" class="selectBtn" data-taskName="{{ usertask.task.name }}" data-taskId="{{ usertask.task.id }}">Select task</a></td>
@@ -91,7 +92,7 @@
             // Requete ajax pour récuperer le temps déja travaillé
             $.ajax({
                 type: "GET",
-                url: '/app_dev.php/chronometer/timespent/' + taskId ,
+                url: '/chronometer/timespent/' + taskId ,
                 dataType: "json",
                 success: function(data) {
                     $('.time').html(secondsToTime(data.timespent));
@@ -145,7 +146,7 @@
         var startChrono = function(){
             $.ajax({
                 type: "POST",
-                url: '/app_dev.php/chronometer/start',
+                url: '/chronometer/start',
                 data: {
                     'taskId' : $('.currentTaskId').html()
                 },
@@ -160,7 +161,7 @@
         var updateChrono = function(){
             $.ajax({
                 type: "POST",
-                url: '/app_dev.php/chronometer/update',
+                url: '/chronometer/update',
                 data: {
                     'taskId' : $('.currentTaskId').html()
                 },
