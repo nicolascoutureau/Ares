@@ -72,4 +72,8 @@ class User extends BaseUser
     {
         return $this->usertasks;
     }
+    
+    public function __toString() {
+        return $this->username;
+    }    
 }

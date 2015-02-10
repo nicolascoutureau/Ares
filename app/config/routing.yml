@@ -1,7 +1,7 @@
 core_admin:
     resource: "@AresCoreBundle/Controller/AdminController.php"
     type:     annotation
-    prefix:   admin/
+    prefix:   adminold/
 
 core_user:
     resource: "@AresCoreBundle/Controller/UserController.php"
@@ -14,3 +14,12 @@ core_chronometer:
     resource: "@AresCoreBundle/Controller/ChronometerController.php"
     type:     annotation
     prefix:   chronometer/
+    
+admin:
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix: /admin
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin    
