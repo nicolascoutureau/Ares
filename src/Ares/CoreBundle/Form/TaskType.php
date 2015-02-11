@@ -15,8 +15,13 @@ class TaskType extends AbstractType
             ->add('name','text')
             ->add('description','textarea')
             ->add('deadline', 'datetime', array(
-                'required'  => true,
-                'format'    => 'dd-MM-yyyy',
+                'widget' => 'single_text',
+                'empty_value' => '-',
+                'required' => true,
+                'format' => 'dd-MM-yyyy HH:mm',
+                'attr'=> [
+                    'class' => 'datetimepicker'
+                ]
             ))
             ->add('estimated_time','integer')
             ->add('state', 'choice', array(
