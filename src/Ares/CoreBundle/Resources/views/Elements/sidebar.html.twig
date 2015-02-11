@@ -6,14 +6,19 @@
         </a>
     </li>
     <li class="sub-menu">
-        <a href="{{ path('admin_task_index') }}">
+        <a href="javascript:;">
             <i class="fa fa-font"></i>
             <span>Taches</span>
         </a>
-{#        <ul class="sub">
+        <ul class="sub">
             <li>
-                <a href="{{ path('admin_task_index') }}">Taches</a>
+                <a href="{{ path('admin_task_index') }}">Gerer les taches</a>
             </li>
-        </ul>#}
+        </ul>
+        <ul class="sub">
+            <li>
+                <a href="{{ path('user_task_index') }}">Voir mes taches</a>
+            </li>
+        </ul>
     </li>
 </ul>
