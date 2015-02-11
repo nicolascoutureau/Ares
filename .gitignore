@@ -13,3 +13,19 @@
 /web/app_dev.php
 /web/config.php
 /composer.lock
+
+# Symfony
+/web/bundles/*
+/web/css/
+/web/js/
+/web/img/*
+/web/images/*
+/web/css/*
+/web/js/*
+/web/upload/*
+
+# Autre
+.idea/
+/puphpet/
+.vagrant
+Vagrantfile
