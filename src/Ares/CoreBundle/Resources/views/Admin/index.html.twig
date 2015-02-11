@@ -31,7 +31,7 @@
                         <td>{{ task.description }}</td>
                         <td>{{ task.deadline | date('d/m/Y')   }}</td>
                         <td>{{ task.estimatedtime }}</td>
-                        <td>{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': task.id})) }}</td>
+                        <td>{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': task.id, 'typeTime': 'total'})) }}</td>
                         <td>{{ task.state | title }}</td>
                         <td>
                             {% for user in task.users %}
