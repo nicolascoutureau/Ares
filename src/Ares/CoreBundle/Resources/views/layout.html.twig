@@ -1,0 +1,12 @@
+{% set in_modal = app.request.query.has('modal') or app.request.request.has('modal') %}
+{% if app.request.isXmlHttpRequest() and in_modal %}
+    {% set layout = 'modal.html.twig' %}
+{% elseif app.request.isXmlHttpRequest() %}
+    {% set layout = 'ajax.html.twig' %}
+{% else %}
+    {% set layout = 'default.html.twig' %}
+{% endif %}
+
+{% extends 'AresCoreBundle:Elements:layout/' ~ layout %}
+
+{%- import "AresCoreBundle:Elements:macro.html.twig" as bo -%}

@@ -1,0 +1,14 @@
+{% macro breadcrumb_block(url, label, first) %}
+    {% import _self as bo %}
+    {% set active = app.request.getRequestUri() == url %}
+    <li class="active">
+        {% if first|default(false) -%}
+            <i class="fa fa-home"></i>
+        {%- endif %}
+        {{ bo.breadcrumb_link(url, label) }}
+    </li>
+{% endmacro %}
+
+{%- macro breadcrumb_link(url, label) -%}
+    <a href="{{ url }}">{{ label }}</a>
+{%- endmacro -%}

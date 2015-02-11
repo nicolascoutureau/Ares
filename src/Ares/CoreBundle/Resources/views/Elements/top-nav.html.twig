@@ -1,0 +1,31 @@
+<ul class="nav pull-right top-menu">
+    <li>
+        <a href="{{ path('admin_task_index') }}" target="_blank" style="padding: 6px 15px 5px !important">
+            <i class="fa fa-eye"></i>
+            Voir le site
+        </a>
+    </li>
+    <!-- user login dropdown start-->
+    {% if app.user is not empty %}
+    <li class="dropdown">
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+            <img alt="" src="{{ asset('bundles/arescore/images/avatar1_small.jpg') }}">
+            <span class="username">{{ app.user.username }}</span>
+            <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu extended logout">
+            <li><a href="{{ path('fos_user_profile_edit') }}"><i class=" fa fa-suitcase"></i>Mon profil</a></li>
+            <li><a href="{{ path('fos_user_change_password') }}"><i class="fa fa-cog"></i> Mon password</a></li>
+            <li><a href="{{ path('fos_user_security_logout') }}"><i class="fa fa-key"></i> Déconnexion</a></li>
+        </ul>
+    </li>
+    {% endif %}
+    <!-- user login dropdown end -->
+    {% if showSiderbarRightButton is defined and showSiderbarRightButton == true %}
+    <li>
+        <div class="toggle-right-box">
+            <div class="fa fa-bars"></div>
+        </div>
+    </li>
+    {% endif %}
+</ul>

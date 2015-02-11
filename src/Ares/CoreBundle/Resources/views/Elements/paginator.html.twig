@@ -1,0 +1,33 @@
+{%- if pages > 1 -%}
+    {% spaceless %}
+        {% set maxLink = maxLink|default(2) %}
+        {% set start = page-maxLink>0 ? page-maxLink : 0 %}
+        {% set end = page+maxLink<pages ? page+maxLink : pages %}
+        {% set route_name = route_name|default(app.request.attributes.get('_route')) %}
+        {% set queryParams = app.request.query.all() %}
+        {% set route_params = route_params|default(app.request.attributes.get('_route_params')|merge(queryParams)) %}
+        {% set page = page|default(app.request.query.get('page', 0)) %}
+        {% set perPage = perPage|default(app.request.query.get('per_page', 25)) %}
+        <ul class="pagination {% block paginationClass '' %}">
+            {% if page > 0 %}
+                <li><a class="" href="{{ path(route_name, route_params|default({})|merge({page:(page-1), per_page:perPage})) }}" data-page="{{ page-1 }}">&lt;</a></li>
+            {% endif %}
+            {% if start > 0 %}
+                <li><a class="" href="{{ path(route_name, route_params|default({})|merge({page:0, per_page:perPage})) }}" data-page="0">1</a></li>
+                <li class="disabled"><a href="javascript:;">...</a></li>
+            {% endif %}
+            {% for i in start..end %}
+                <li{% if i==page %} class="active"{% endif %}>
+                    <a class="" href="{{ path(route_name, route_params|default({})|merge({page:i, per_page:perPage})) }}" data-page="{{ i }}">{{ i+1 }}</i></a>
+                </li>
+            {% endfor %}
+            {% if end<pages %}
+                <li class="disabled"><a href="javascript:;">...</a></li>
+                <li><a class="" href="{{ path(route_name, route_params|default({})|merge({page:pages, per_page:perPage})) }}" data-page="{{ pages }}">{{ pages+1 }}</a></li>
+            {% endif %}
+            {% if page<pages %}
+                <li><a class="" href="{{ path(route_name, route_params|default({})|merge({page:(page+1), per_page:perPage})) }}" data-page="{{ page+1 }}">&gt;</a></li>
+            {% endif %}
+        </ul>
+    {% endspaceless %}
+{%- endif -%}

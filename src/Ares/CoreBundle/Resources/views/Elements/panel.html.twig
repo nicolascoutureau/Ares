@@ -1,0 +1,21 @@
+<section class="panel">
+    {%- set _title -%}
+        {%- block title -%}
+            {{- title|default('') -}}
+        {%- endblock -%}
+    {%- endset -%}
+    {%- if _title is not empty %}
+    <header class="panel-heading {{ headingClass|default('') }}">
+        {{ _title|raw }}
+        {% set _tools = block('tools') %}
+        {% if _tools is not empty %}
+        <span class="tools pull-right">
+            {{ _tools|raw }}
+        </span>
+        {% endif %}
+    </header>
+    {% endif %}
+    <div class="panel-body {{ bodyClass|default('') }}" {% block bodyAttr %}{% endblock %}>
+        {{ block('body') }}
+    </div>
+</section>

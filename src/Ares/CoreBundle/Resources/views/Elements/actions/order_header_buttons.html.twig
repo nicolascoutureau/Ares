@@ -1,0 +1,9 @@
+<img class="spinner" id="spinner-order" src="{{ asset('bundles/back/images/spinner_doc_28x28_gray.gif') }}" alt="Chargement..." style="display: none" />
+<a class="btn btn-round btn-success tooltips" id="save-order" href="{{ path(route) }}" title="{{ 'Save this new ordered position'|trans }}" style="display:none">
+    <i class="fa fa-save"></i>
+    {{ 'Save new order'|trans }}
+</a>
+<a class="btn btn-round btn-danger tooltips" id="cancel-order" href="javascript:document.location.reload();" title="{{ 'Cancel this new order'|trans }}" style="display: none">
+    <i class="fa fa-eraser"></i>
+    {{ 'Cancel new order'|trans }}
+</a>

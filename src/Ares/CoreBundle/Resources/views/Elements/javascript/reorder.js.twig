@@ -1,0 +1,28 @@
+$('tbody', $table).sortable({
+    axis: 'y',
+    cursor: 'move',
+    handle: '.handle',
+    helper: function(e, ui) {
+        ui.children().each(function() {
+            $(this).width($(this).width());
+        });
+        return ui;
+    },
+    change: function(e, ui){
+        $('#save-order, #cancel-order').fadeIn();
+    }
+});
+
+$('#save-order').on('click', function(e){
+    e.preventDefault();
+    var order = [];
+    $('tr', $table).each(function(){
+        order.push($(this).data('id'));
+    });
+
+    $('#spinner-order').fadeIn();
+    $.post($(this).attr('href'), {order:order}, function(){
+        $('#save-order, #cancel-order, #spinner-order').fadeOut();
+        alert('{{ 'Order updated'|trans }}');
+    });
+});

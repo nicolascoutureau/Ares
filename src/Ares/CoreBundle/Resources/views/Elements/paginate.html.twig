@@ -1,0 +1,42 @@
+{%- if pages > 1 -%}
+    {% spaceless %}
+        {% set maxLink = maxLink|default(5) %}
+        {% set start = page-maxLink>0 ? page-maxLink : 1 %}
+        {% set end = page+maxLink<pages ? page+maxLink : pages %}
+        {% set route_name = route_name|default(app.request.attributes.get('_route')) %}
+        {% set queryParams = app.request.query.all() %}
+        {% set route_params = route_params|default(app.request.attributes.get('_route_params')|merge(queryParams)) %}
+        {% set page = page|default(app.request.query.get('page', 1)) %}
+        {% set perPage = perPage|default(app.request.query.get('per_page', 25)) %}
+        <div class="row">
+            {#maxLink : {{ dump(maxLink) }}<br>
+            start : {{ dump(start) }}<br>
+            end : {{ dump(end) }}<br>
+            page : {{ dump(page) }}<br>
+            perPage : {{ dump(perPage) }}<br>#}
+            <div class="cols-md-12 text-center">
+                <ul class="pagination">
+                    {% if page > 1 %}
+                        <li><a href="{{ path(route_name, route_params|default({})|merge({page:(page-1), per_page:perPage})) }}" data-page="{{ page-1 }}">&lt;</a></li>
+                    {% endif %}
+                    {% if start > 1 %}
+                        <li><a href="{{ path(route_name, route_params|default({})|merge({page:1, per_page:perPage})) }}" data-page="1">1</a></li>
+                        <li class="disabled"><span>&hellip;</span></li>
+                    {% endif %}
+                    {% for i in start..end %}
+                        <li{% if i==page %} class="active"{% endif %}>
+                            <a href="{{ path(route_name, route_params|default({})|merge({page:i, per_page:perPage})) }}" data-page="{{ i }}">{{ i }}{% if i==page %} <span class="sr-only">(current)</span>{% endif %}</a>
+                        </li>
+                    {% endfor %}
+                    {% if end<pages %}
+                        <li class="disabled"><span>&hellip;</span></li>
+                        <li><a href="{{ path(route_name, route_params|default({})|merge({page:pages, per_page:perPage})) }}" data-page="{{ pages }}">{{ pages+1 }}</a></li>
+                    {% endif %}
+                    {% if page<pages %}
+                        <li class="arrow"><a href="{{ path(route_name, route_params|default({})|merge({page:(page+1), per_page:perPage})) }}" data-page="{{ page+1 }}">&gt;</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    {% endspaceless %}
+{%- endif -%}

@@ -1,0 +1,166 @@
+{%- if form is defined %}{% form_theme form 'AresCoreBundle:Elements:form_div_layout.html.twig' %}{% endif -%}
+{% set _sidebarLeft %}{% block sidebar %}{% include 'AresCoreBundle:Elements:sidebar.html.twig' %}{% endblock %}{% endset %}
+{% set _sidebarRight = block('siderbarRight') %}
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Webaki.com">
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+        <title>{{ title_for_layout|default('admin_task_index') }}</title>
+        <!--Core CSS -->
+        <link href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" media="screen" />
+        <link rel="stylesheet" href="{{ asset('bundles/arescore/bs3/css/bootstrap.min.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bundles/arescore/css/bootstrap-reset.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bundles/arescore/font-awesome/css/font-awesome.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bundles/arescore/css/bootstrap-switch.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bundles/arescore/css/clndr.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bundles/arescore/js/bootstrap-datetimepicker/css/datetimepicker.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bundles/arescore/js/bootstrap-datepicker/css/datepicker.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bundles/arescore/css/style.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bundles/arescore/css/style-responsive.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bundles/arescore/js/advanced-datatable/css/demo_page.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bundles/arescore/js/advanced-datatable/css/demo_table.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bundles/arescore/js/data-tables/DT_bootstrap.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bundles/arescore/js/nestable/jquery.nestable.css') }}"/>
+        {% stylesheets %}
+        <link href="{{ asset_url }}" rel="stylesheet" type="text/css" media="screen" />
+        {% endstylesheets  %}
+        {% block stylesheet_for_layout %}{% endblock %}
+    </head>
+    <body{% if _sidebarLeft is empty and _sidebarRight is empty %} class="full-width"{% endif %}>
+        <!--header start-->
+        <header class="header fixed-top clearfix">
+            <!--logo start-->
+            <div class="brand">
+                <a href="{{ path('admin_task_index') }}" class="logo">
+                    <img src="{{ asset('bundles/arescore/images/logo.png') }}" alt="" style="max-height: 50px">
+                </a>
+                <div class="sidebar-toggle-box">
+                    <div class="fa fa-bars"></div>
+                </div>
+            </div>
+            <!--logo end-->
+            <div class="nav notify-row" id="top_menu">
+                {% block notification %}
+                <ul class="nav top-menu">
+                </ul>
+                {% endblock %}
+            </div>
+            {% set _horizontalMenu = block('horizontal-menu') %}
+            {% if _horizontalMenu is not empty %}
+                <div class="horizontal-menu navbar-collapse collapse ">
+                    {{ _horizontalMenu|raw }}
+                </div>
+            {% endif %}
+            <div class="top-nav clearfix">
+                {% block navTop %}
+                    {% include 'AresCoreBundle:Elements:top-nav.html.twig' with {showSiderbarRightButton: _sidebarRight is not empty } only %}
+                {% endblock %}
+            </div>
+        </header>
+        <!--header end-->
+
+    {% if _sidebarLeft is not empty %}
+        <!--sidebar start-->
+        <aside>
+            <div id="sidebar"  class="nav-collapse ">
+                <div class="leftside-navigation">
+                    {{ _sidebarLeft|raw }}
+                </div>
+            </div>
+        </aside>
+        <!--sidebar end-->
+    {% endif %}
+
+        <!--main content start-->
+        <section id="main-content">
+            <section class="wrapper">
+
+                {% set _breadcrumb = block('breadcrumb') %}
+                {% if _breadcrumb is not empty %}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!--breadcrumbs start -->
+                        <ul class="breadcrumb">
+                            {{ bo.breadcrumb_block(path('back_homepage'), 'Home', true) }}
+                            {{ _breadcrumb|raw }}
+                        </ul>
+                        <!--breadcrumbs end -->
+                    </div>
+                </div>
+                {% endif %}
+
+                {% set _flashMessages = app.session.flashbag.all() %}
+                {% for type, messages in _flashMessages %}
+                    {% for flashMessage in messages %}
+                        <div class="alert{% if type!='message' %} alert-{{ type }}{% endif %} alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            {{ flashMessage|raw }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+                {% block content %}{% endblock %}
+            </section>
+        </section>
+        <!--main content end-->
+
+    {% if _sidebarRight is not empty %}
+        <!--right sidebar start-->
+        <div class="right-sidebar">
+            <div class="search-row">
+                <input type="text" placeholder="Search" class="form-control">
+            </div>
+            {{ _sidebarRight|raw }}
+        </div>
+        <!--right sidebar end-->
+    {% endif %}
+
+        <!-- Placed js at the end of the document so the pages load faster -->
+        <!--Core js-->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/ckeditor/4.3.2/ckeditor.js"></script>
+        {#<script>CKEDITOR.config.contentsCss = ['{{ app.request.getSchemeAndHttpHost() ~ asset('bundles/front/css/ckeditor.min.css') }}']</script>#}
+        {% javascripts
+            'bundles/arescore/bs3/js/bootstrap.min.js'
+            'bundles/arescore/js/jquery.dcjqaccordion.2.7.js'
+            'bundles/arescore/js/jquery.scrollTo.min.js'
+            'bundles/arescore/js/jquery.nicescroll.js'
+            'bundles/arescore/js/jQuery-slimScroll-1.3.0/jquery.slimscroll.js'
+            'bundles/arescore/js/skycons/skycons.js'
+            'bundles/arescore/js/jquery.scrollTo/jquery.scrollTo.js'
+            'bundles/arescore/js/jquery.easing.min.js'
+            'bundles/arescore/js/calendar/clndr.js'
+            'bundles/arescore/js/bootstrap-switch.js'
+            'bundles/arescore/js/underscore-min.js'
+            'bundles/arescore/js/calendar/moment-2.2.1.js'
+            'bundles/arescore/js/calendar/evnt.calendar.init.js'
+            'bundles/arescore/js/jvector-map/jquery-jvectormap-1.2.2.min.js'
+            'bundles/arescore/js/jvector-map/jquery-jvectormap-us-lcc-en.js'
+            'bundles/arescore/js/gauge/gauge.js'
+            'bundles/arescore/js/easypiechart/jquery.easypiechart.js'
+            'bundles/arescore/js/sparkline/jquery.sparkline.js'
+            'bundles/arescore/js/flot-chart/jquery.flot.js'
+            'bundles/arescore/js/flot-chart/jquery.flot.tooltip.min.js'
+            'bundles/arescore/js/flot-chart/jquery.flot.resize.js'
+            'bundles/arescore/js/flot-chart/jquery.flot.pie.resize.js'
+            'bundles/arescore/js/flot-chart/jquery.flot.animator.min.js'
+            'bundles/arescore/js/advanced-datatable/js/jquery.dataTables.js'
+            'bundles/arescore/js/data-tables/DT_bootstrap.js'
+            'bundles/arescore/js/bootstrap-datepicker/js/bootstrap-datepicker.js'
+            'bundles/arescore/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'
+            'bundles/arescore/js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js'
+            'bundles/arescore/js/nestable/jquery.nestable.js'
+            'bundles/arescore/js/scripts.js'
+            output='js/backoffice.min.js'
+        %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+        {% block javascript_for_layout %}{% endblock %}
+    </body>
+</html>
