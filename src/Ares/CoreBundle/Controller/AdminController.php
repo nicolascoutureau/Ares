@@ -107,7 +107,7 @@ class AdminController extends Controller
     $deleteForm = $this->createDeleteForm($id);
     return $this->render('AresCoreBundle:Task:edit.html.twig', array(
                 'entity' => $entity,
-                'edit_form' => $editForm->createView(),
+                'form' => $editForm->createView(),
                 'delete_form' => $deleteForm->createView(),
     ));
   }

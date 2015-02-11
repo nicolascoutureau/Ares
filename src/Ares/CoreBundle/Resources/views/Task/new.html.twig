@@ -1,86 +1,16 @@
-{% extends '::base.html.twig' %}
-{%  block stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{{ asset('bucket/') }}js/bootstrap-datetimepicker/css/datetimepicker.css">
-{% endblock %}
-{% block body %}
-    <section class="panel">
-        <header class="panel-heading">
-            Ajouter une tache
-        </header>
-        <div class="panel-body">
-            <div class="position-center">
-                <form action="{{ path('admin_task_create') }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
-                    {{ form_errors(form) }}
-                    <div class="form-group">
-                        {{ form_errors(form.name) }}
-                        {{ form_label(form.name, "Nom de la tache",{ 'label_attr': {'class': 'col-lg-2 col-sm-2 control-label'} }) }}
-                        <div class="col-lg-10">
-                            {{ form_widget(form.name, { 'attr': {'class': 'form-control', 'placeholder': 'Titre de la tache'} }) }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        {{ form_errors(form.description) }}
-                        {{ form_label(form.description, "Description de la tache",{ 'label_attr': {'class': 'col-lg-2 col-sm-2 control-label'} }) }}
-                        <div class="col-lg-10">
-                            {{ form_widget(form.description, { 'attr': {'rows' : 5, 'class': 'form-control', 'placeholder': 'Description de la tache'} }) }}
-                        </div>
-                    </div>
-                    {# Deadline #}
-                    <div class="form-group">
-                        {{ form_errors(form.deadline) }}
-                        {{ form_label(form.deadline, "Deadline",{ 'label_attr': {'class': 'col-lg-2 col-sm-2 control-label'} }) }}
-                        <div class="col-lg-10">
-                            {{ form_widget(form.deadline) }}
-                        </div>
-                    </div>
-                    {# state #}
-                    <div class="form-group">
-                        {{ form_errors(form.state) }}
-                        {{ form_label(form.state, "État de la  tache",{ 'label_attr': {'class': 'col-lg-2 col-sm-2 control-label'} }) }}
-                        <div class="col-lg-10">
-                            {{ form_widget(form.state, { 'attr': {'class': 'form-control'} }) }}
-                        </div>
-                    </div>
-                    {# estimated Time #}
-                    <div class="form-group">
-                        {{ form_errors(form.estimated_time) }}
-                        {{ form_label(form.estimated_time, "Temps prévisonnel",{ 'label_attr': {'class': 'col-lg-2 col-sm-2 control-label'} }) }}
-                        <div class="col-lg-10">
-                            {{ form_widget(form.estimated_time, { 'attr': {'class': 'form-control'} }) }}
-                        </div>
-                    </div>
-                    {# Users #}
-                    <div class="form-group">
-                        {{ form_label(form.name, "Utilisateurs sur cette tache",{ 'label_attr': {'class': 'col-lg-2 col-sm-2 control-label'} }) }}
-                        <div class="col-lg-10">
-                            {{ form_widget(form.users, { 'attr': {'class': 'form-control'} }) }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-lg-offset-2 col-lg-10">
-                            {{ form_widget(form.submit, { 'attr': {'class': 'btn btn-success'} }) }}
-                        </div>
-                    </div>
-                    {{ form_rest(form) }}
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <div>
-    </div>
-
-    <ul class="record_actions">
-        <li>
-            <a href="{{ path('admin_task_index') }}">
-                Back to the list
+{% extends 'AresCoreBundle::layout.html.twig' %}
+{% block content %}
+    {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Ajouter un la tache'} %}
+        {% block tools %}
+            <a class="btn btn-default btn-round tooltips" href="{{ path('admin_task_index') }}" title="Retour à la liste des taches">
+                <i class="fa fa-chevron-left"></i>
+                Retour
             </a>
-        </li>
-    </ul>
-{% endblock %}
-{% block javascripts %}
-    <script type="text/javascript" src="{{ asset('bucket/') }}js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
-    <script>
-        $('#ares_taskbundle_task_deadline').datetimepicker();
-    </script>
+        {% endblock %}
+        {% block body %}
+            <div class="position-center">
+                {{ form(form, {style:'horizontal'}) }}
+            </div>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

@@ -13,3 +13,8 @@ services:
         
     ares_core.datetime:
         class: Ares\CoreBundle\Services\DateTime
+
+    back.twig.form_extension:
+        class: Ares\CoreBundle\Twig\BootstrapFormExtension
+        tags:
+            - { name: twig.extension }
