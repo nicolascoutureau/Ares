@@ -1,7 +1,5 @@
-
 {% extends 'AresCoreBundle::layout.html.twig' %}
-
-{% block content -%}
+{% block content %}
     {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Editer un la tache'} %}
         {% block tools %}
             <a class="btn btn-default btn-round tooltips" href="{{ path('admin_task_index') }}" title="Retour à la liste des taches">
@@ -11,59 +9,7 @@
         {% endblock %}
         {% block body %}
             <div class="position-center">
-            {{ form_start(edit_form, {'attr': {'class' : "form-horizontal" }}) }}
-            <div class="form-group">
-                {{ form_errors(edit_form.name) }}
-                {{ form_label(edit_form.name, "Nom de la tache",{ 'label_attr': {'class': 'col-lg-2 col-sm-2 control-label'} }) }}
-                <div class="col-lg-10">
-                    {{ form_widget(edit_form.name, { 'attr': {'class': 'form-control', 'placeholder': 'Titre de la tache'} }) }}
-                </div>
-            </div>
-            <div class="form-group">
-                {{ form_errors(edit_form.description) }}
-                {{ form_label(edit_form.description, "Description de la tache",{ 'label_attr': {'class': 'col-lg-2 col-sm-2 control-label'} }) }}
-                <div class="col-lg-10">
-                    {{ form_widget(edit_form.description, { 'attr': {'rows' : 5, 'class': 'form-control', 'placeholder': 'Description de la tache'} }) }}
-                </div>
-            </div>
-            {# Deadline #}
-            <div class="form-group">
-                {{ form_errors(edit_form.deadline) }}
-                {{ form_label(edit_form.deadline, "Deadline",{ 'label_attr': {'class': 'col-lg-2 col-sm-2 control-label'} }) }}
-                <div class="col-lg-10">
-                    {{ form_widget(edit_form.deadline, { 'attr': {'data-date-format':'yyyy-mm-dd hh:ii','class': 'form-control', 'type' : 'date'} }) }}
-                </div>
-            </div>
-            {# state #}
-            <div class="form-group">
-                {{ form_errors(edit_form.state) }}
-                {{ form_label(edit_form.state, "État de la  tache",{ 'label_attr': {'class': 'col-lg-2 col-sm-2 control-label'} }) }}
-                <div class="col-lg-10">
-                    {{ form_widget(edit_form.state, { 'attr': {'class': 'form-control'} }) }}
-                </div>
-            </div>
-            {# estimated Time #}
-            <div class="form-group">
-                {{ form_errors(edit_form.estimated_time) }}
-                {{ form_label(edit_form.estimated_time, "Temps prévisonnel",{ 'label_attr': {'class': 'col-lg-2 col-sm-2 control-label'} }) }}
-                <div class="col-lg-10">
-                    {{ form_widget(edit_form.estimated_time, { 'attr': {'class': 'form-control'} }) }}
-                </div>
-            </div>
-            {# Users #}
-            <div class="form-group">
-                {{ form_label(edit_form.name, "Utilisateurs sur cette tache",{ 'label_attr': {'class': 'col-lg-2 col-sm-2 control-label'} }) }}
-                <div class="col-lg-10">
-                    {{ form_widget(edit_form.users, { 'attr': {'class': 'form-control'} }) }}
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-lg-offset-2 col-lg-10">
-                    {{ form_widget(edit_form.submit, { 'attr': {'class': 'btn btn-success'} }) }}
-                </div>
-            </div>
-            {{ form_rest(edit_form) }}
-            {{ form_end(edit_form) }}
+                {{ form(form, {style:'horizontal'}) }}
             </div>
         {% endblock %}
     {% endembed %}

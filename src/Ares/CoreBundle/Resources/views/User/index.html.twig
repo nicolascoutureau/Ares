@@ -1,43 +1,45 @@
-{% extends '::base.html.twig' %}
+{% extends 'AresCoreBundle::layout.html.twig' %}
 
-{% block body -%}
-    <h1>My tasks</h1>
-
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>id</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Deadline</th>
-            <th>Estimated time</th>
-            <th>Time Spent</th>
-            <th>State</th>
-            <th>Users</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for usertask in usertasks %}
-            <tr>
-                <td>{{ usertask.task.id }}</td>
-                <td>{{ usertask.task.name }}</td>
-                <td>{{ usertask.task.description }}</td>
-                <td>{{ usertask.task.deadline | date('d/m/Y') }}</td>
-                <td>{{ usertask.task.estimatedtime }}</td>
-                <td>{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id})) }}
-                </td>
-                <td>{{ usertask.task.state | title }}</td>
-                <td>
-                    {% for user in usertask.task.users %}
-                      {{ user.username | title }}{% if loop.last is same as(false) %},{% endif %}
-                    {% endfor %}
-                </td>
-                <td><a href="#" class="selectBtn" data-taskName="{{ usertask.task.name }}" data-taskId="{{ usertask.task.id }}">Select task</a></td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% block content -%}
+    {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Mes taches'} %}
+        {% block body %}
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Deadline</th>
+                    <th>Estimated time</th>
+                    <th>Time Spent</th>
+                    <th>State</th>
+                    <th>Users</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for usertask in usertasks %}
+                    <tr>
+                        <td>{{ usertask.task.id }}</td>
+                        <td>{{ usertask.task.name }}</td>
+                        <td>{{ usertask.task.description }}</td>
+                        <td>{{ usertask.task.deadline | date('d/m/Y') }}</td>
+                        <td>{{ usertask.task.estimatedtime }}</td>
+                        <td>{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id})) }}
+                        </td>
+                        <td>{{ usertask.task.state | title }}</td>
+                        <td>
+                            {% for user in usertask.task.users %}
+                              {{ user.username | title }}{% if loop.last is same as(false) %},{% endif %}
+                            {% endfor %}
+                        </td>
+                        <td><a href="#" class="selectBtn" data-taskName="{{ usertask.task.name }}" data-taskId="{{ usertask.task.id }}">Select task</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endblock %}
+    {% endembed %}
 
     <div class="chronometer" id="draggable">
         <h2>Chronometer</h2>
@@ -50,11 +52,27 @@
 
 {% endblock %}
 
-{% block stylesheets %}
+{% block stylesheet_for_layout %}
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+    <style>
+        /*chronometre*/
+        .chronometer{
+            background: white;
+            padding:10px 20px;
+            border-radius: 10px;
+            position: absolute;
+            -moz-box-shadow: 1px 1px 10px 0px #cfcfcf;
+            -webkit-box-shadow: 1px 1px 10px 0px #cfcfcf;
+            -o-box-shadow: 1px 1px 10px 0px #cfcfcf;
+            box-shadow: 1px 1px 10px 0px #cfcfcf;
+            filter:progid:DXImageTransform.Microsoft.Shadow(color=#cfcfcf, Direction=134, Strength=10);
+            cursor: move;
+            border: 1px solid lightgrey;
+        }
+    </style>
 {%  endblock %}
 
-{% block javascripts %}
+{% block javascript_for_layout %}
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
 <script>
