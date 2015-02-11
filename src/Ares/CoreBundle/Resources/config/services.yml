@@ -13,4 +13,3 @@ services:
         
     ares_core.datetime:
         class: Ares\CoreBundle\Services\DateTime
-    
