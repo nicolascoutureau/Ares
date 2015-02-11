@@ -95,8 +95,13 @@
                 url: '/chronometer/timespent/' + taskId ,
                 dataType: "json",
                 success: function(data) {
+                    
                     $('.time').html(secondsToTime(data.timespent));
+                    
+                    
                     taskSelected = true;
+                    
+                    console.log(data);
                 }
             });
         });

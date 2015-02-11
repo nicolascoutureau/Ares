@@ -78,18 +78,38 @@ class ChronometerController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $chronometerRepository = $em->getRepository('AresCoreBundle:Chronometer');
-
+        $chronometerRepository = $em->getRepository('AresCoreBundle:Chronometer');        
         $chronometers = $chronometerRepository->myFindByTask($id);
+        
+        $currentUser= $this->get('security.context')->getToken()->getUser();
+        
+//        dump($currentUser->getId());
 
+        $connectedUserTimeSpent = 0;
+        foreach ($chronometers as $chronometer) {
+            $idUserTask = $chronometer->getUsertask()->getUser()->getId();
+            if ($idUserTask == $currentUser->getId()) {
+                $connectedUserTimeSpent += $chronometer->getStopDate()->getTimeStamp() - $chronometer->getStartDate()->getTimeStamp();
+            }
+            
+//            dump($chronometer->getStopDate());
+        }
+        
+//        die;
+        
         $timespent = 0;
         foreach ($chronometers as $chronometer) {
             $timespent+= $chronometer->getStopdate()->getTimestamp() - $chronometer->getStartdate()->getTimestamp();
         }
         
+        $infosTimeSpent = array(
+            'perso' => $connectedUserTimeSpent,
+            'total' => $timespent
+        );
+        
         // Si la requête est une requête AJAX
         if ($request->isXmlHttpRequest()) {
-          $response = array("code" => 200, "success" => true, "timespent" => $timespent);
+          $response = array("code" => 200, "success" => true, "timespent" => $infosTimeSpent);
           return new Response(json_encode($response));      
         } else {
           
