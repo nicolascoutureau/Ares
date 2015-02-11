@@ -138,25 +138,29 @@
                 if (timer !== null) return;
                 value = timeToSeconds($('.time').html());
                 valuePerso = timeToSeconds($('.timePerso').html());
-                
-                timer = setInterval(function () {
-                    value = Math.round(value);
-                    valuePerso = Math.round(valuePerso);
-                    $('.time').html(secondsToTime(value));
-                    $('.timePerso').html(secondsToTime(valuePerso));
-                    if(value%5 === 0){
-                        console.log('save');
-                        updateChrono();
-                    }
 
-                    value++;
-                    valuePerso++;
+                incrementTime();
+                timer = setInterval(function () {
+                    incrementTime();
                 }, interval);
 
             }else{
                 alert('Selectionnez une tache');
             }
         });
+
+        var incrementTime = function(){
+            value = Math.round(value);
+            valuePerso = Math.round(valuePerso);
+            $('.time').html(secondsToTime(value));
+            $('.timePerso').html(secondsToTime(valuePerso));
+            if(value%5 === 0){
+                updateChrono();
+            }
+
+            value++;
+            valuePerso++;
+        }
 
         $('.stopBtn').on('click', function(e){
             e.preventDefault();
