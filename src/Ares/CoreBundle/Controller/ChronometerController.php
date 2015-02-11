@@ -74,8 +74,10 @@ class ChronometerController extends Controller
      * Retourne le temps travailler par tache
      * @Route("/timespent/{id}", name="chronometer_timespent")
      */
-    public function timeSpentByTaskAction(Request $request, $id){
+    public function timeSpentByTaskAction(Request $request, $id, $typeTime = null){
 
+        
+        
         $em = $this->getDoctrine()->getManager();
 
         $chronometerRepository = $em->getRepository('AresCoreBundle:Chronometer');        
@@ -112,10 +114,17 @@ class ChronometerController extends Controller
           $response = array("code" => 200, "success" => true, "timespent" => $infosTimeSpent);
           return new Response(json_encode($response));      
         } else {
+          $datetime = $this->container->get('ares_core.datetime');  
           
-          $datetime = $this->container->get('ares_core.datetime');     
+          if ($typeTime == 'perso') {
+              return new Response($datetime->secondsToTime($connectedUserTimeSpent));
+          } else if ($typeTime == 'total') {
+              return new Response($datetime->secondsToTime($timespent));
+          } 
+            
+             
           
-          return new Response($datetime->secondsToTime($timespent));
+          
         }
         
         

@@ -11,7 +11,8 @@
                     <th>Description</th>
                     <th>Deadline</th>
                     <th>Estimated time</th>
-                    <th>Time Spent</th>
+                    <th>Your spent time</th>
+                    <th>Total spent time</th>
                     <th>State</th>
                     <th>Users</th>
                     <th>Action</th>
@@ -25,8 +26,8 @@
                         <td>{{ usertask.task.description }}</td>
                         <td>{{ usertask.task.deadline | date('d/m/Y') }}</td>
                         <td>{{ usertask.task.estimatedtime }}</td>
-                        <td>{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id})) }}
-                        </td>
+                        <td>{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id, 'typeTime': 'perso' })) }}</td>
+                        <td>{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id, 'typeTime' : 'total' })) }}</td>
                         <td>{{ usertask.task.state | title }}</td>
                         <td>
                             {% for user in usertask.task.users %}
@@ -45,6 +46,7 @@
         <h2>Chronometer</h2>
         <p class="currentTaskName"></p>
         <p class="currentTaskId" style="display: none"></p>
+        <div class="timePerso">0:00:00</div>
         <div class="time">0:00:00</div>
         <a href="" class="startBtn">Start</a>
         <a href="" class="stopBtn">Stop</a>
@@ -114,12 +116,12 @@
                 dataType: "json",
                 success: function(data) {
                     
-                    $('.time').html(secondsToTime(data.timespent));
                     
+                    
+                    $('.timePerso').html(secondsToTime(data.timespent.perso));
+                    $('.time').html(secondsToTime(data.timespent.total));
                     
                     taskSelected = true;
-                    
-                    console.log(data);
                 }
             });
         });
@@ -135,15 +137,20 @@
                 // Lance le timer
                 if (timer !== null) return;
                 value = timeToSeconds($('.time').html());
+                valuePerso = timeToSeconds($('.timePerso').html());
+                
                 timer = setInterval(function () {
                     value = Math.round(value);
+                    valuePerso = Math.round(valuePerso);
                     $('.time').html(secondsToTime(value));
+                    $('.timePerso').html(secondsToTime(valuePerso));
                     if(value%5 === 0){
                         console.log('save');
                         updateChrono();
                     }
 
                     value++;
+                    valuePerso++;
                 }, interval);
 
             }else{
