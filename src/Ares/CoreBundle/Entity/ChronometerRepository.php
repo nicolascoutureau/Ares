@@ -48,6 +48,33 @@ class ChronometerRepository extends EntityRepository
            ->getFirstResult();
 
         return $qb->getQuery()->getResult();
-
     }
+
+    public function getCurrentWeek()
+    {
+        $query = $this
+            ->createQueryBuilder('c')
+            ->where('WEEK(c.startdate) = WEEK(CURRENT_DATE())')
+            ->andWhere('WEEK(c.stopdate) = WEEK(CURRENT_DATE())')
+            ->orderBy('c.startdate', 'DESC');
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function getChronometersByTaskId($taskId)
+    {
+        $query = $this
+            ->createQueryBuilder('c')
+            ->select('sum(TIMESTAMPDIFF( second, c.startdate, c.stopdate)) AS time')
+            ->addSelect('u.username')
+            ->join('c.usertask', 'ut')
+            ->join('ut.task', 't')
+            ->join('ut.user', 'u')
+            ->where("t.id = :taskId")
+            ->setParameter('taskId', $taskId)
+            ->groupBy('u.username');
+
+        return $query->getQuery()->getResult();
+    }
+
 }

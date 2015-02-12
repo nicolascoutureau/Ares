@@ -28,7 +28,7 @@
                     <tr>
                         <td>{{ task.id }}</td>
                         <td>{{ task.name }}</td>
-                        <td>{{ task.description }}</td>
+                        <td>{{ task.description | truncate(20, true, '...') }}</td>
                         <td>{{ task.deadline | date('d/m/Y')   }}</td>
                         <td>{{ task.estimatedtime }}</td>
                         <td>{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': task.id, 'typeTime': 'total'})) }}</td>
@@ -38,7 +38,10 @@
                                 {{ user.username | title }}{% if loop.last is same as(false) %},{% endif %}
                             {% endfor %}
                         </td>
-                        <td class="listing-actions two">
+                        <td class="listing-actions three">
+                            <a class="btn btn-default btn-sm tooltips" href="{{ path('admin_task_show', { 'id': task.id }) }}" title="Voir la tache" >
+                                <i class="fa fa-eye"></i>
+                            </a>
                             <a class="btn btn-primary btn-sm tooltips" href="{{ path('admin_task_edit', { 'id': task.id }) }}" title="Editer cette tache" >
                                 <i class="fa fa-pencil"></i>
                             </a>

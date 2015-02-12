@@ -1,0 +1,120 @@
+{% extends 'AresCoreBundle::layout.html.twig' %}
+
+{% set monday = true %}
+{% set tuesday = true %}
+{% set wednesday = true %}
+{% set thursday = true %}
+{% set friday = true %}
+{% set saturday = true %}
+{% set sunday = true %}
+
+
+{% block content -%}
+        {% block body %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="timeline">
+                            {% for time in times %}
+                                {% if time.startdate | date('l') == 'Monday' and monday == true %}
+                                    <article class="timeline-item alt">
+                                        <div class="text-right">
+                                            <div class="time-show first">
+                                                <a href="#" class="btn btn-primary">{{ time.startdate | intl_date('EEEE') |capitalize }}</a>
+                                            </div>
+                                        </div>
+                                    </article>
+                                    {% set monday = false %}
+                                {% endif %}
+                                {% if time.startdate | date('l') == 'Tuesday' and tuesday == true %}
+                                    <article class="timeline-item alt">
+                                        <div class="text-right">
+                                            <div class="time-show first">
+                                                <a href="#" class="btn btn-primary">{{ time.startdate | intl_date('EEEE') |capitalize }}</a>
+                                            </div>
+                                        </div>
+                                    </article>
+                                    {% set tuesday = false %}
+                                {% endif %}
+                                {% if time.startdate | date('l') == 'Wednesday' and wednesday == true %}
+                                    <article class="timeline-item alt">
+                                        <div class="text-right">
+                                            <div class="time-show first">
+                                                <a href="#" class="btn btn-primary">{{ time.startdate | intl_date('EEEE') |capitalize }}</a>
+                                            </div>
+                                        </div>
+                                    </article>
+                                    {% set wednesday = false %}
+                                {% endif %}
+                                {% if time.startdate | date('l') == 'Thursday' and thursday == true %}
+                                    <article class="timeline-item alt">
+                                        <div class="text-right">
+                                            <div class="time-show first">
+                                                <a href="#" class="btn btn-primary">{{ time.startdate | intl_date('EEEE') |capitalize }}</a>
+                                            </div>
+                                        </div>
+                                    </article>
+                                    {% set thursday = false %}
+                                {% endif %}
+                                {% if time.startdate | date('l') == 'Friday' and friday == true %}
+                                    <article class="timeline-item alt">
+                                        <div class="text-right">
+                                            <div class="time-show first">
+                                                <a href="#" class="btn btn-primary">{{ time.startdate | intl_date('EEEE') |capitalize }}</a>
+                                            </div>
+                                        </div>
+                                    </article>
+                                    {% set friday = false %}
+                                {% endif %}
+                                {% if time.startdate | date('l') == 'Saturday' and saturday == true %}
+                                    <article class="timeline-item alt">
+                                        <div class="text-right">
+                                            <div class="time-show first">
+                                                <a href="#" class="btn btn-primary">{{ time.startdate | intl_date('EEEE') |capitalize }}</a>
+                                            </div>
+                                        </div>
+                                    </article>
+                                    {% set saturday = false %}
+                                {% endif %}
+                                {% if time.startdate | date('l') == 'Sunday' and sunday == true %}
+                                    <article class="timeline-item alt">
+                                        <div class="text-right">
+                                            <div class="time-show first">
+                                                <a href="#" class="btn btn-primary">{{ time.startdate | intl_date('EEEE') |capitalize }}</a>
+                                            </div>
+                                        </div>
+                                    </article>
+                                    {% set sunday = false %}
+                                {% endif %}
+
+                                <article class="timeline-item {% if loop.index is odd %} alt {% endif %}">
+                                    <div class="timeline-desk">
+                                        <div class="panel">
+                                            <div class="panel-body">
+                                                <span class="arrow-alt"></span>
+
+                                                <span class="timeline-icon red">
+                                                    <i class="fa fa-check"></i>
+                                                </span>
+                                                <span class="timeline-date">08:25 am</span>
+                                                <h1 class="red">De {{ time.startdate | date('h:i:s') }} à {{ time.stopdate | date('h:i:s') }}</h1>
+                                                <p>{{ time.usertask.user.username }} a travaillé sur la tache <a
+                                                            href="{{ path('admin_task_show', {'id' : time.usertask.task.id } ) }}">{{ time.usertask.task.name }}</a></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+        {% endblock %}
+{% endblock %}
+
+{% block stylesheet_for_layout %}
+    <style>
+        .panel{
+            overflow: inherit !important;
+        }
+    </style>
+{% endblock %}
+
