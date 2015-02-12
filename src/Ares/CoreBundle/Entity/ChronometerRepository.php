@@ -48,6 +48,19 @@ class ChronometerRepository extends EntityRepository
            ->getFirstResult();
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function getCurrentWeek()
+    {
+
+        $query = $this
+            ->createQueryBuilder('r')
+            ->where('WEEK(r.startdate) = WEEK(CURRENT_DATE())')
+            ->andWhere('WEEK(r.stopdate) = WEEK(CURRENT_DATE())')
+            ->orderBy('r.startdate', 'DESC');
+
+        return $query->getQuery()->getResult();
 
     }
+
 }
