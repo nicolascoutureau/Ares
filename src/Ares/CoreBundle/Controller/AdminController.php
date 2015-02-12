@@ -78,20 +78,7 @@ class AdminController extends Controller
     return $form;
   }
 
-  /**
-   * @Route("/task/{id}", name="admin_task_show")
-   */
-  public function showAction($id)
-  {
-    $em = $this->getDoctrine()->getManager();
-    $task = $em->getRepository('AresCoreBundle:Task')
-            ->findOneById($id);
-    $deleteForm = $this->createDeleteForm($id);
-    return $this->render('AresCoreBundle:Task:show.html.twig', array(
-                'task' => $task,
-                'delete_form' => $deleteForm->createView(),
-    ));
-  }
+
 
   /**
    * @Route("/task/{id}/edit", name="admin_task_edit")
@@ -358,5 +345,45 @@ class AdminController extends Controller
                 'tasks' => $tasks
     ));
   }
+  
+  /**
+   * @Route("/task/{id}", name="admin_task_show")
+   */
+  public function showAction($id)
+  {
+    $em = $this->getDoctrine()->getManager();
 
+    $task = $em->getRepository('AresCoreBundle:Task')->findOneById($id);
+
+    $chronometers = $em->getRepository('AresCoreBundle:Chronometer')->getChronometersByTaskId($id);
+
+    $chronometersTotal =0;
+    foreach($chronometers as $chronometer){
+      $chronometersTotal += $chronometer['time'];
+    }
+
+    $deleteForm = $this->createDeleteForm($id);
+
+    return $this->render('AresCoreBundle:Task:show.html.twig', array(
+        'chronometersTotal' => $chronometersTotal,
+        'chronometers' => $chronometers,
+        'task' => $task,
+        'delete_form' => $deleteForm->createView(),
+    ));
+  }
+
+  /**
+   * @Route("/week", name="admin_week_show")
+   */
+  public function weekAction()
+  {
+    $em = $this->getDoctrine()->getManager();
+
+    $times = $em->getRepository('AresCoreBundle:Chronometer')->getCurrentWeek();
+
+    return $this->render('AresCoreBundle:Week:index.html.twig', array(
+        'times' => $times
+
+    ));
+  }
 }
