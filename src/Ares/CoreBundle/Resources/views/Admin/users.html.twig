@@ -1,0 +1,36 @@
+{% extends 'AresCoreBundle::layout.html.twig' %}
+
+{% block content -%}
+    {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Liste des Utilisateurs'} %}
+    {% block tools %}
+        <a class="btn btn-primary btn-round tooltips" href="" title="Ajouter une utilisateur">
+            <i class="fa fa-plus"></i>
+            Ajouter
+        </a>
+    {% endblock %}
+    {% block body %}
+        <div class="row">
+        {% for user in users %}
+            <div class="col-md-6">
+                <aside class="profile-nav alt">
+                    <section class="panel">
+                        <div class="user-heading alt gray-bg media">
+                            <a href="#">
+                                <img alt="" src="images/lock_thumb.jpg">
+                            </a>
+                            <h1>{{ user.usernameCanonical|title }}</h1>
+                            <p>{{ user.emailCanonical|title }}</p>
+                        </div>
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="{{ path('user_task_detail', { 'id': user.id }) }}"> <i class="fa fa-tasks"></i> Activites Recentes </a></li>
+                        </ul>
+                    </section>
+                </aside>
+            </div>
+        {% endfor %}
+        </div>
+    {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+
