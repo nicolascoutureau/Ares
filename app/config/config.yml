@@ -66,6 +66,7 @@ doctrine:
         dql:
             datetime_functions:
                 week: Ares\CoreBundle\DQL\Week
+                timestampdiff: Ares\CoreBundle\DQL\TimestampDiff
 
 # Swiftmailer Configuration
 swiftmailer:

@@ -52,15 +52,41 @@ class ChronometerRepository extends EntityRepository
 
     public function getCurrentWeek()
     {
-
         $query = $this
-            ->createQueryBuilder('r')
-            ->where('WEEK(r.startdate) = WEEK(CURRENT_DATE())')
-            ->andWhere('WEEK(r.stopdate) = WEEK(CURRENT_DATE())')
-            ->orderBy('r.startdate', 'DESC');
+            ->createQueryBuilder('c')
+            ->where('WEEK(c.startdate) = WEEK(CURRENT_DATE())')
+            ->andWhere('WEEK(c.stopdate) = WEEK(CURRENT_DATE())')
+            ->orderBy('c.startdate', 'DESC');
 
         return $query->getQuery()->getResult();
+    }
 
+    public function getChronometersByTaskId($taskId)
+    {
+        // Select u.username, sum(TIMESTAMPDIFF( second, c.startdate, c.stopdate)) as time From Chronometer as c
+        // Join Usertask as ut On c.usertask_id = ut.id
+        // Join Task as t On ut.task_id = t.id
+        // Join fos_user as u On ut.user_id = u.id
+        // where t.id = 1
+        // group by u.username
+
+
+
+
+        $query = $this
+            ->createQueryBuilder('c')
+            ->select('sum(TIMESTAMPDIFF( second, c.startdate, c.stopdate)) AS time')
+            ->addSelect('u.username')
+            ->join('c.usertask', 'ut')
+            ->join('ut.task', 't')
+            ->join('ut.user', 'u')
+            ->where("t.id = :taskId")
+            ->setParameter('taskId', $taskId)
+            ->groupBy('u.username');
+
+
+
+        return $query->getQuery()->getResult();
     }
 
 }

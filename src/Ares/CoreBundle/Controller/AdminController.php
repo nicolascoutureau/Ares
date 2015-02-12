@@ -278,9 +278,18 @@ class AdminController extends Controller
 
     $task = $em->getRepository('AresCoreBundle:Task')->findOneById($id);
 
+    $chronometers = $em->getRepository('AresCoreBundle:Chronometer')->getChronometersByTaskId($id);
+
+    $chronometersTotal =0;
+    foreach($chronometers as $chronometer){
+      $chronometersTotal += $chronometer['time'];
+    }
+
     $deleteForm = $this->createDeleteForm($id);
 
     return $this->render('AresCoreBundle:Task:show.html.twig', array(
+        'chronometersTotal' => $chronometersTotal,
+        'chronometers' => $chronometers,
         'task' => $task,
         'delete_form' => $deleteForm->createView(),
     ));
@@ -291,7 +300,6 @@ class AdminController extends Controller
    */
   public function weekAction()
   {
-
     $em = $this->getDoctrine()->getManager();
 
     $times = $em->getRepository('AresCoreBundle:Chronometer')->getCurrentWeek();
