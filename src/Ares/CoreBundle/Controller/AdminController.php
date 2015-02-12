@@ -282,4 +282,81 @@ class AdminController extends Controller
     ;
   }
 
+  /**
+   * @Route("/historical/week", name="admin_histo_week")
+   */
+  public function histoByWeekAction(Request $request)
+  {
+    $em = $this->getDoctrine()->getManager();
+
+    $tasks = $em->getRepository('AresCoreBundle:Task')->findAll();
+
+    return $this->render('AresCoreBundle:Historical:week.html.twig', array(
+                'tasks' => $tasks
+    ));
+  }
+
+  /**
+   * @Route("/historical/users/{id}", name="admin_histo_users")
+   */
+  public function histoByUserAction(Request $request, $id = 0)
+  {
+    $em = $this->getDoctrine()->getManager();
+
+    if ($id == 0) {
+        $users = $em->getRepository('AresCoreBundle:User')->findAll();
+
+        return $this->render('AresCoreBundle:Historical:users.html.twig', array(
+                    'users' => $users,
+                    'userId' => $id
+        ));
+    } else {
+        $user = $em->getRepository('AresCoreBundle:User')->find($id);
+        // Créons nous-mêmes la réponse en JSON, grâce à la fonction json_encode()
+        $response = new Response('{
+            data:[
+                {id:1, text:"Project #1",start_date:"01-04-2013", duration:11,
+                progress: 0.6, open: true},
+                {id:2, text:"Task #1",   start_date:"03-04-2013", duration:5, 
+                progress: 1,   open: true, parent:1},
+                {id:3, text:"Task #2",   start_date:"02-04-2013", duration:7, 
+                progress: 0.5, open: true, parent:1},
+                {id:4, text:"Task #2.1", start_date:"03-04-2013", duration:2, 
+                progress: 1,   open: true, parent:3},
+                {id:5, text:"Task #2.2", start_date:"04-04-2013", duration:3, 
+                progress: 0.8, open: true, parent:3},
+                {id:6, text:"Task #2.3", start_date:"05-04-2013", duration:4, 
+                progress: 0.2, open: true, parent:3}
+            ],
+            links:[
+                {id:1, source:1, target:2, type:"1"},
+                {id:2, source:1, target:3, type:"1"},
+                {id:3, source:3, target:4, type:"1"},
+                {id:4, source:4, target:5, type:"0"},
+                {id:5, source:5, target:6, type:"0"}
+            ]
+        }');
+
+        // Ici, nous définissons le Content-type pour dire au navigateur
+        // que l'on renvoie du JSON et non du HTML
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+  }
+
+  /**
+   * @Route("/historical/tasks/{id}", name="admin_histo_tasks")
+   */
+  public function histoByTaskAction(Request $request, $id = 0)
+  {
+    $em = $this->getDoctrine()->getManager();
+
+    $tasks = $em->getRepository('AresCoreBundle:Task')->findAll();
+
+    return $this->render('AresCoreBundle:Historical:tasks.html.twig', array(
+                'tasks' => $tasks
+    ));
+  }
+
 }

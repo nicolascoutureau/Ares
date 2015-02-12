@@ -1,0 +1,57 @@
+{% extends 'AresCoreBundle::layout.html.twig' %}
+
+{% block content -%}
+    {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Liste des Taches'} %}
+    {% block tools %}
+        <a class="btn btn-primary btn-round tooltips" href="{{ path('admin_task_create') }}" title="Ajouter une tache">
+            <i class="fa fa-plus"></i>
+            Ajouter
+        </a>
+    {% endblock %}
+    {% block body %}
+        <table class="table  table-hover general-table">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Deadline</th>
+                <th>Estimated time</th>
+                <th>Time Spent</th>
+                <th>State</th>
+                <th>Users</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.id }}</td>
+                        <td>{{ task.name }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.deadline | date('d/m/Y')   }}</td>
+                        <td>{{ task.estimatedtime }}</td>
+                        <td>{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': task.id, 'typeTime': 'total'})) }}</td>
+                        <td>{{ task.state | title }}</td>
+                        <td>
+                            {% for user in task.users %}
+                                {{ user.username | title }}{% if loop.last is same as(false) %},{% endif %}
+                            {% endfor %}
+                        </td>
+                        <td class="listing-actions two">
+                            <a class="btn btn-primary btn-sm tooltips" href="{{ path('admin_task_edit', { 'id': task.id }) }}" title="Editer cette tache" >
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                            <a class="btn btn-danger btn-sm tooltips" href="{{ path('admin_task_delete', { 'id': task.id }) }}" title="Supprimer cette tache" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tache');">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+
