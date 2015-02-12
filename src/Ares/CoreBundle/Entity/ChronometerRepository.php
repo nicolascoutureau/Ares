@@ -63,16 +63,6 @@ class ChronometerRepository extends EntityRepository
 
     public function getChronometersByTaskId($taskId)
     {
-        // Select u.username, sum(TIMESTAMPDIFF( second, c.startdate, c.stopdate)) as time From Chronometer as c
-        // Join Usertask as ut On c.usertask_id = ut.id
-        // Join Task as t On ut.task_id = t.id
-        // Join fos_user as u On ut.user_id = u.id
-        // where t.id = 1
-        // group by u.username
-
-
-
-
         $query = $this
             ->createQueryBuilder('c')
             ->select('sum(TIMESTAMPDIFF( second, c.startdate, c.stopdate)) AS time')
@@ -83,8 +73,6 @@ class ChronometerRepository extends EntityRepository
             ->where("t.id = :taskId")
             ->setParameter('taskId', $taskId)
             ->groupBy('u.username');
-
-
 
         return $query->getQuery()->getResult();
     }
