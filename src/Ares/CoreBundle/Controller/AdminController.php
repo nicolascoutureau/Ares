@@ -5,6 +5,7 @@ namespace Ares\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Ares\CoreBundle\Entity\Task;
 use Ares\CoreBundle\Form\TaskType;
 
@@ -297,31 +298,50 @@ class AdminController extends Controller
         ));
     } else {
         $user = $em->getRepository('AresCoreBundle:User')->find($id);
+        $jsonGantt = array("data" => array(), "links" => array());
+        $i = $j = $k = 0;
+        foreach ($user->getUsertasks() as $UserTask) {
+            $i = $j;
+            $i++;
+            $Task = $UserTask->getTask();
+            $datecreated = $Task->getDatecreated();
+            $deadline = $Task->getDeadline();
+            $jsonGantt['data'][] = array(
+                "id" => $i,
+                "text" => $Task->getName(),
+                "start_date" => $datecreated->format('Y-m-d H:i'),
+                "duration" => $datecreated->diff($deadline)->format('%a'),
+                "progress" => "1",
+                "open" => "true"
+            );
+            
+            $j = $i;
+            foreach ($UserTask->getChronometers() as $Chrono) {
+                $j++;
+                $startdate = $Chrono->getStartdate();
+                $stopdate = $Chrono->getStopdate();
+                $jsonGantt['data'][] = array(
+                    "id" => $j,
+                    "text" => $Task->getName() . $j,
+                    "start_date" => $startdate->format('Y-m-d H:i'),
+                    "duration" => $startdate->diff($stopdate)->format('%a'),
+                    "progress" => "1",
+                    "open" => "true",
+                    "parent" => $i
+                );
+                $k++;
+                $jsonGantt['links'][] = array(
+                    "id" => $k,
+                    "source" => $i,
+                    "target" => $j,
+                    "type" => "1"
+                );
+            }
+        }
+        
         // Créons nous-mêmes la réponse en JSON, grâce à la fonction json_encode()
-        $response = new Response('{
-            data:[
-                {id:1, text:"Project #1",start_date:"01-04-2013", duration:11,
-                progress: 0.6, open: true},
-                {id:2, text:"Task #1",   start_date:"03-04-2013", duration:5, 
-                progress: 1,   open: true, parent:1},
-                {id:3, text:"Task #2",   start_date:"02-04-2013", duration:7, 
-                progress: 0.5, open: true, parent:1},
-                {id:4, text:"Task #2.1", start_date:"03-04-2013", duration:2, 
-                progress: 1,   open: true, parent:3},
-                {id:5, text:"Task #2.2", start_date:"04-04-2013", duration:3, 
-                progress: 0.8, open: true, parent:3},
-                {id:6, text:"Task #2.3", start_date:"05-04-2013", duration:4, 
-                progress: 0.2, open: true, parent:3}
-            ],
-            links:[
-                {id:1, source:1, target:2, type:"1"},
-                {id:2, source:1, target:3, type:"1"},
-                {id:3, source:3, target:4, type:"1"},
-                {id:4, source:4, target:5, type:"0"},
-                {id:5, source:5, target:6, type:"0"}
-            ]
-        }');
-
+        $response = new Response(json_encode($jsonGantt));
+        
         // Ici, nous définissons le Content-type pour dire au navigateur
         // que l'on renvoie du JSON et non du HTML
         $response->headers->set('Content-Type', 'application/json');
