@@ -28,7 +28,7 @@
                             <td class="tableEstimatedTime">{{ usertask.task.estimatedtime |toTime }}</td>
                             <td class="tableTimePerso">{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id, 'typeTime': 'perso' })) }}</td>
                             <td class="tableTime">{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id, 'typeTime' : 'total' })) }}</td>
-                            <td><span class="label label-success label-mini">{{ usertask.task.state | title }}</span></td>
+                            <td><span class="label label-{{ usertask.task.state }} label-mini">{{ usertask.task.state | title }}</span></td>
                             <td>
                                 {% for user in usertask.task.users %}
                                     {{ user.username | title }}{% if loop.last is same as(false) %},{% endif %}
