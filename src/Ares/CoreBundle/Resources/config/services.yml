@@ -23,3 +23,9 @@ services:
         class: Ares\CoreBundle\Twig\DateExtension
         tags:
           - { name: twig.extension }
+
+    ares.twig.seconds_to_time:
+      class: Ares\CoreBundle\Twig\SecondsToTime
+      arguments: [@ares_core.datetime]
+      tags:
+        - { name: twig.extension }

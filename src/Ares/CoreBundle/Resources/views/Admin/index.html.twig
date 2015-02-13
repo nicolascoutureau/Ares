@@ -30,9 +30,9 @@
                         <td>{{ task.name }}</td>
                         <td>{{ task.description | truncate(20, true, '...') }}</td>
                         <td>{{ task.deadline | date('d/m/Y')   }}</td>
-                        <td>{{ task.estimatedtime }}</td>
+                        <td>{{ task.estimatedtime | toTime }}</td>
                         <td>{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': task.id, 'typeTime': 'total'})) }}</td>
-                        <td>{{ task.state | title }}</td>
+                        <td><span class="label label-success label-mini">{{ task.state | title }}</span></td>
                         <td>
                             {% for user in task.users %}
                                 {{ user.username | title }}{% if loop.last is same as(false) %},{% endif %}

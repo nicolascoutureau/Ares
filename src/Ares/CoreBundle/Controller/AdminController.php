@@ -19,7 +19,7 @@ class AdminController extends Controller
   {
     $em = $this->getDoctrine()->getManager();
 
-    $tasks = $em->getRepository('AresCoreBundle:Task')->findAll();
+    $tasks = $em->getRepository('AresCoreBundle:Task')->findBy(array(), array('deadline' => 'ASC'));
 
     return $this->render('AresCoreBundle:Admin:index.html.twig', array(
                 'tasks' => $tasks
