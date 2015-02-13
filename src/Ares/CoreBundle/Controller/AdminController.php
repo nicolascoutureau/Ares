@@ -18,7 +18,7 @@ class AdminController extends Controller
   {
     $em = $this->getDoctrine()->getManager();
 
-    $tasks = $em->getRepository('AresCoreBundle:Task')->findAll();
+    $tasks = $em->getRepository('AresCoreBundle:Task')->findBy(array(), array('deadline' => 'ASC'));
 
     return $this->render('AresCoreBundle:Admin:index.html.twig', array(
                 'tasks' => $tasks
@@ -77,8 +77,6 @@ class AdminController extends Controller
     $form->add('submit', 'submit', array('label' => 'Create'));
     return $form;
   }
-
-
 
   /**
    * @Route("/task/{id}/edit", name="admin_task_edit")
