@@ -29,3 +29,8 @@ services:
       arguments: [@ares_core.datetime]
       tags:
         - { name: twig.extension }
+
+    ares.form.type.switcher:
+      class: Ares\CoreBundle\Form\Type\BootstrapSwitch
+      tags:
+        - { name: form.type, alias: switcher }

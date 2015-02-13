@@ -77,7 +77,6 @@ class UsertaskRepository extends EntityRepository
             ->setParameter("userID", $userId)
             ->orderBy('task.deadline', "ASC");
 
-
         return $query->getQuery()->getResult();
     }
 }

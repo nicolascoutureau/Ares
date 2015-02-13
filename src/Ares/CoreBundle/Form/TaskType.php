@@ -26,14 +26,17 @@ class TaskType extends AbstractType
             ->add('estimated_time','integer')
             ->add('state', 'choice', array(
                 'choices'   => array(
-                    'assigned'   => 'Assigned',
-                    'inprogress' => 'In progress',
-                    'completed'   => 'Completed',
+                    'Assigned'   => 'Assigned',
+                    'In Progress' => 'In Progress',
+                    'Completed'   => 'Completed',
+                    'Canceled' => 'Canceled',
+                    'Not Assigned' => 'Not Assigned'
                 ),
                 'multiple'  => false,
             ))
             ->add('users', 'entity', array(
                 'class'    => 'AresCoreBundle:User',
+                'required' => false,
                 'property' => 'username',
                 'multiple' => true))               
 //            ->add('timespent', 'text')               

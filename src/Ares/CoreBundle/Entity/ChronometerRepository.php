@@ -61,6 +61,7 @@ class ChronometerRepository extends EntityRepository
         return $query->getQuery()->getResult();
     }
 
+    // Retourne un tableau avec chaque utilisateur et son temps travaillé sur la tache
     public function getChronometersByTaskId($taskId)
     {
         $query = $this

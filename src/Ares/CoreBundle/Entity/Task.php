@@ -10,6 +10,12 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Task
 {
+    const STATE_ASSIGNED = 'Assigned';
+    const STATE_NOT_ASSIGNED = 'Not Assigned';
+    const STATE_IN_PROGRESS = 'In Progress';
+    const STATE_COMPLETED = 'Completed';
+    const STATE_CANCELED = 'Canceled';
+
     /**
      * @var integer
      *
@@ -43,7 +49,7 @@ class Task
      */
     private $estimated_time;
     /**
-     * @ORM\Column(name="state", type="string")
+     * @ORM\Column(name="state", type="string", columnDefinition="ENUM('Assigned','Not Assigned','In Progress','Completed','Canceled')")
      */
     private $state;
     /**
@@ -234,6 +240,9 @@ class Task
      */
     public function setState($state)
     {
+        if (!in_array($state, array(self::STATE_ASSIGNED, self::STATE_NOT_ASSIGNED, self::STATE_CANCELED,self::STATE_COMPLETED,self::STATE_IN_PROGRESS))) {
+            throw new \InvalidArgumentException("Statut incorrect");
+        }
         $this->state = $state;
         return $this;
     }

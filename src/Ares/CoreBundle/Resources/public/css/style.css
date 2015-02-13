@@ -5783,3 +5783,23 @@ img.remove-row{
 .panel.padding{
     padding: 7px 10px;
 }
+
+.label-Assigned{
+    background-color: #FCB322;
+}
+
+.label-Canceled{
+    background-color: #FF6C60;
+}
+
+.label-In.Progress{
+    background-color: #59ace2;
+}
+
+.label-Completed{
+    background-color: #A9D86E;
+}
+
+.label-Not.Assigned{
+    background-color: #8175c7;
+}
