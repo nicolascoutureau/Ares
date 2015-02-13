@@ -3,7 +3,7 @@
 {% block content -%}
     {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Mes taches'} %}
         {% block body %}
-            <table class="table table-striped">
+            <table class="table table-hover general-table">
                 <thead>
                     <tr>
                         <th>id</th>
@@ -23,12 +23,12 @@
                         <tr class="taskRow " data-taskId="{{ usertask.task.id }}">
                             <td>{{ usertask.task.id }}</td>
                             <td>{{ usertask.task.name }}</td>
-                            <td>{{ usertask.task.description }}</td>
+                            <td>{{ usertask.task.description | truncate(20, true, '...') }}</td>
                             <td>{{ usertask.task.deadline | date('d/m/Y') }}</td>
-                            <td class="tableEstimatedTime">{{ usertask.task.estimatedtime }}</td>
+                            <td class="tableEstimatedTime">{{ usertask.task.estimatedtime |toTime }}</td>
                             <td class="tableTimePerso">{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id, 'typeTime': 'perso' })) }}</td>
                             <td class="tableTime">{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id, 'typeTime' : 'total' })) }}</td>
-                            <td>{{ usertask.task.state | title }}</td>
+                            <td><span class="label label-success label-mini">{{ usertask.task.state | title }}</span></td>
                             <td>
                                 {% for user in usertask.task.users %}
                                     {{ user.username | title }}{% if loop.last is same as(false) %},{% endif %}
