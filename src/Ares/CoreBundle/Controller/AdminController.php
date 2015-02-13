@@ -78,8 +78,6 @@ class AdminController extends Controller
     return $form;
   }
 
-
-
   /**
    * @Route("/task/{id}/edit", name="admin_task_edit")
    */
