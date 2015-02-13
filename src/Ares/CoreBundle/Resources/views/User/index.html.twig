@@ -20,12 +20,13 @@
                 </thead>
                 <tbody>
                     {% for usertask in usertasks %}
+                        {{ dump(usertask) }}
                         <tr class="taskRow " data-taskId="{{ usertask.task.id }}">
                             <td>{{ usertask.task.id }}</td>
                             <td>{{ usertask.task.name }}</td>
                             <td>{{ usertask.task.description | truncate(20, true, '...') }}</td>
                             <td>{{ usertask.task.deadline | date('d/m/Y') }}</td>
-                            <td class="tableEstimatedTime">{{ usertask.task.estimatedtime |toTime }}</td>
+                            <td>{{ usertask.task.estimatedtime |toTime }}<input type="hidden" value="{{ usertask.task.estimatedtime }}" class="tableEstimatedTime"></td>
                             <td class="tableTimePerso">{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id, 'typeTime': 'perso' })) }}</td>
                             <td class="tableTime">{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id, 'typeTime' : 'total' })) }}</td>
                             <td><span class="label label-success label-mini">{{ usertask.task.state | title }}</span></td>
@@ -36,6 +37,7 @@
                             </td>
                             <td><a href="#" class="selectBtn">Select task</a></td>
                         </tr>
+                        
                     {% endfor %}
                 </tbody>
             </table>
@@ -87,6 +89,35 @@
 
 
         jQuery(document).ready(function ($) {
+            
+            var tasksNotifiedArray = new Array();
+            
+            function notifyMe() {
+                // Let's check if the browser supports notifications
+                if (!("Notification" in window)) {
+                    alert("This browser does not support desktop notification");
+                }
+
+                // Let's check if the user is okay to get some notification
+                else if (Notification.permission === "granted") {
+                    // If it's okay let's create a notification
+                    var notification = new Notification("Hi there!");
+                }
+
+                // Otherwise, we need to ask the user for permission
+                else if (Notification.permission !== 'denied') {
+                    Notification.requestPermission(function (permission) {
+                        // If the user is okay, let's create a notification
+                        if (permission === "granted") {
+                            var notification = new Notification("Hi there!");
+                        }
+                    });
+                }
+
+                // At last, if the user already denied any notification, and you 
+                // want to be respectful there is no need to bother them any more.
+            }
+
 
             // Draggable
             $(function () {
@@ -211,11 +242,21 @@
                 $('.time').html(secondsToTime(value));
                 $('.timePerso').html(secondsToTime(valuePerso));
                 
-                var estimatedTime = $(taskRowSelected).find('.tableEstimatedTime').html();
-                var totalTime = Math.round((Number(value) / 60));
+                var estimatedTime = $(taskRowSelected).find('.tableEstimatedTime').val();
+                var totalTime = Math.round((Number(value)));
                 
-                if (totalTime >  (Number(estimatedTime) + (20 * Number(estimatedTime) / 100))) {
-                    console.log('Temps dépassé');
+                console.log(estimatedTime);
+                console.log(totalTime);
+                
+                
+                if (totalTime >  (Number(estimatedTime) + (20 * Number(estimatedTime) / 100)) && tasksNotifiedArray.indexOf($('#selectTask').val()) === -1) {
+
+                    
+                    
+                        notifyMe();
+                        tasksNotifiedArray.push($('#selectTask').val());
+            
+                    
                 }
                 
 
@@ -238,6 +279,7 @@
                     clearInterval(timer);
                     timer = null;
                     taskLaunched = false;
+                    $('#selectTask').removeAttr('disabled');
                 } else {
                     alert('Commencez une tache');
                 }
@@ -255,6 +297,9 @@
                     dataType: "json",
                     success: function (response) {
                         console.log(response);
+{#                        console.log('start bla');#}
+                        $('#selectTask').attr('disabled', 'disabled');
+                        
                     }
                 });
             };

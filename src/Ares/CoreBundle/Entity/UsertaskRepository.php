@@ -71,8 +71,12 @@ class UsertaskRepository extends EntityRepository
     public function getUsertasksByUserId($userId){
         $query = $this
             ->createQueryBuilder('ut')
+//            ->select('sum(TIMESTAMPDIFF( second, c.startdate, c.stopdate)) AS time')    
+//            ->select('ut', 'TIMESTAMPDIFF( second, c.startdate, c.stopdate)')
+//            ->select(array('ut.task', 'sum(TIMESTAMPDIFF( second, c.startdate, c.stopdate)) AS time'))    
             ->join('ut.user', 'u')
             ->join('ut.task', 'task')
+            ->join('ut.chronometers', 'c')
             ->where('u.id = :userID')
             ->setParameter("userID", $userId)
             ->orderBy('task.deadline', "ASC");
@@ -80,4 +84,9 @@ class UsertaskRepository extends EntityRepository
 
         return $query->getQuery()->getResult();
     }
+    
+
+    
+    
+    
 }

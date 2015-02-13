@@ -27,10 +27,9 @@ class UserController extends Controller {
         
         $em = $this->getDoctrine()->getManager();
 
-        
-
         $usertasks = $em->getRepository('AresCoreBundle:Usertask')->getUsertasksByUserId($currentUser);
-
+        
+        dump($usertasks);
 
         return $this->render('AresCoreBundle:User:index.html.twig', array(
             'usertasks' => $usertasks,

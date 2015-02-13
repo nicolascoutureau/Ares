@@ -1,0 +1,17 @@
+{% extends 'AresCoreBundle::layout.html.twig' %}
+
+{% block content -%}
+    {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Mes taches'} %}
+        {% block body %}
+
+{#            {{ dump(usertasks) }}#}
+            {% for usertask in usertasks %}
+                {{ dump(usertask.time) }}
+                {{ dump(usertask[0]) }}
+            {% endfor %}    
+        {% endblock %}
+    {% endembed %}
+
+
+
+{% endblock %}

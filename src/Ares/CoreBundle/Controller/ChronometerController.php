@@ -126,14 +126,11 @@ class ChronometerController extends Controller
           
           
         }
-        
-        
-        
-        
-
-    }
+}
     
 
+
+    
     /**
      * Retourne le temps travailler par tache
      * @Route("/test", name="test")
