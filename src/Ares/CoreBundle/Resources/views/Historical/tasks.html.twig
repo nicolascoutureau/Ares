@@ -1,57 +1,58 @@
 {% extends 'AresCoreBundle::layout.html.twig' %}
+    {% block content -%}
+        {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Taches'} %}
+        {% block body %}
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Selectionner un utilisateur</label>
+                <div class="col-sm-8">
+                    <div class="input-group m-bot15">
+                        <span class="input-group-addon btn-white"><i class="fa fa-tasks"></i></span>
+                        <select class="form-control" id="taskForHisto">
+                            <optgroup label="Assign">
+                                {% for task in tasks %}
+                                    <option value="{{ task.id }}">{{ task.name | title }}</option>
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="Complete">
+                                {% for task in tasks %}
+                                    <option value="{{ task.id }}">{{ task.name | title }}</option>
+                                {% endfor %}
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+             </div>
+        {% endblock %}
+        {% endembed %}
+        
+        {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Historique'} %}
+        {% block body %}
+            <div id="gantt_here" style='height:400px;'></div>
+        {% endblock %}
+        {% endembed %}
+    {% endblock %}
 
-{% block content -%}
-    {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Liste des Taches'} %}
-    {% block tools %}
-        <a class="btn btn-primary btn-round tooltips" href="{{ path('admin_task_create') }}" title="Ajouter une tache">
-            <i class="fa fa-plus"></i>
-            Ajouter
-        </a>
-    {% endblock %}
-    {% block body %}
-        <table class="table  table-hover general-table">
-            <thead>
-            <tr>
-                <th>id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Deadline</th>
-                <th>Estimated time</th>
-                <th>Time Spent</th>
-                <th>State</th>
-                <th>Users</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-                {% for task in tasks %}
-                    <tr>
-                        <td>{{ task.id }}</td>
-                        <td>{{ task.name }}</td>
-                        <td>{{ task.description }}</td>
-                        <td>{{ task.deadline | date('d/m/Y')   }}</td>
-                        <td>{{ task.estimatedtime }}</td>
-                        <td>{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': task.id, 'typeTime': 'total'})) }}</td>
-                        <td>{{ task.state | title }}</td>
-                        <td>
-                            {% for user in task.users %}
-                                {{ user.username | title }}{% if loop.last is same as(false) %},{% endif %}
-                            {% endfor %}
-                        </td>
-                        <td class="listing-actions two">
-                            <a class="btn btn-primary btn-sm tooltips" href="{{ path('admin_task_edit', { 'id': task.id }) }}" title="Editer cette tache" >
-                                <i class="fa fa-pencil"></i>
-                            </a>
-                            <a class="btn btn-danger btn-sm tooltips" href="{{ path('admin_task_delete', { 'id': task.id }) }}" title="Supprimer cette tache" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tache');">
-                                <i class="fa fa-trash-o"></i>
-                            </a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endblock %}
-    {% endembed %}
+{% block stylesheet_for_layout %}
+    <link rel="stylesheet" href="{{ asset('bundles/arescore/dhtmlxGantt/codebase/dhtmlxgantt.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('bundles/arescore/dhtmlxGantt/codebase/skins/dhtmlxgantt_meadow.css') }}"/>
 {% endblock %}
 
+{% block javascript_for_layout %}
+    <script src="{{ asset('bundles/arescore/dhtmlxGantt/codebase/dhtmlxgantt.js') }}"></script>
+    <script src="{{ asset('bundles/arescore/dhtmlxGantt/codebase/locale/locale_fr.js') }}"></script>
+    <script>
+        jQuery(document).ready(function($) {
+            $("#taskForHisto").change(function() {
+                gantt.config.xml_date = "%Y-%m-%d %H:%i";
+                gantt.config.scale_unit = "day";
+                gantt.config.step = 1;
+                gantt.config.subscales = [
+                    {unit:"hour", step:6, date:"%H:%i" }
+                ];
 
+                gantt.init("gantt_here");
+                gantt.load('{{ path('admin_histo_tasks') }}' + '/' + $(this).val());//loads data to Gantt from the database
+            });
+        });
+    </script>
+{% endblock %}

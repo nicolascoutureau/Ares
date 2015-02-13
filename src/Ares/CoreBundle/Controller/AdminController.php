@@ -356,12 +356,78 @@ class AdminController extends Controller
   public function histoByTaskAction(Request $request, $id = 0)
   {
     $em = $this->getDoctrine()->getManager();
+    
+    if ($id == 0) {
+        $tasks = $em->getRepository('AresCoreBundle:Task')->findAll();
 
-    $tasks = $em->getRepository('AresCoreBundle:Task')->findAll();
+        return $this->render('AresCoreBundle:Historical:tasks.html.twig', array(
+                    'tasks' => $tasks,
+                    'taskId' => $id
+        ));
+    } else {
+        $Task = $em->getRepository('AresCoreBundle:Task')->find($id);
+        $jsonGantt = array("data" => array(), "links" => array());
+        
+        $i = $j = $k = 1;
+        $datecreated = $Task->getDatecreated();
+        $deadline = $Task->getDeadline();
+        $jsonGantt['data'][] = array(
+            "id" => 1,
+            "text" => $Task->getName(),
+            "start_date" => $datecreated->format('Y-m-d H:i'),
+            "duration" => $datecreated->diff($deadline)->format('%a'),
+            "progress" => "1",
+            "open" => "true"
+        );
+        
+        foreach ($Task->getUsertasks() as $Usertask) {
+            $i = $j;
+            $i++;
+            $dateInvoke = (!empty($Usertask->getDateinvoke())) ? $Usertask->getDateinvoke() : $datecreated;
+            $dateRevoke = (!empty($Usertask->getDaterevoke())) ? $Usertask->getDaterevoke() : $deadline;
+            $jsonGantt['data'][] = array(
+                "id" => $i,
+                "text" => $Task->getName(),
+                "start_date" => $dateInvoke->format('Y-m-d H:i'),
+                "duration" => $dateInvoke->diff($dateRevoke)->format('%a'),
+                "progress" => "1",
+                "open" => "true",
+                "parent" => 1
+            );
+            
+            $j = $i;
+            foreach ($UserTask->getChronometers() as $Chrono) {
+                $j++;
+                $startdate = $Chrono->getStartdate();
+                $stopdate = $Chrono->getStopdate();
+                $jsonGantt['data'][] = array(
+                    "id" => $j,
+                    "text" => $Task->getName() . $j,
+                    "start_date" => $startdate->format('Y-m-d H:i'),
+                    "duration" => $startdate->diff($stopdate)->format('%a'),
+                    "progress" => "1",
+                    "open" => "true",
+                    "parent" => $i
+                );
+                $k++;
+                $jsonGantt['links'][] = array(
+                    "id" => $k,
+                    "source" => $i,
+                    "target" => $j,
+                    "type" => "1"
+                );
+            }
+        }
+        
+        // Créons nous-mêmes la réponse en JSON, grâce à la fonction json_encode()
+        $response = new Response(json_encode($jsonGantt));
+        
+        // Ici, nous définissons le Content-type pour dire au navigateur
+        // que l'on renvoie du JSON et non du HTML
+        $response->headers->set('Content-Type', 'application/json');
 
-    return $this->render('AresCoreBundle:Historical:tasks.html.twig', array(
-                'tasks' => $tasks
-    ));
+        return $response;
+    }
   }
   
   /**
