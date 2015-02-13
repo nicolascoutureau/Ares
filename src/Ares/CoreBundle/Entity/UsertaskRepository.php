@@ -67,4 +67,17 @@ class UsertaskRepository extends EntityRepository
 
         return $qb->getQuery()->setMaxResults(1)->getResult();
     }
+
+    public function getUsertasksByUserId($userId){
+        $query = $this
+            ->createQueryBuilder('ut')
+            ->join('ut.user', 'u')
+            ->join('ut.task', 'task')
+            ->where('u.id = :userID')
+            ->setParameter("userID", $userId)
+            ->orderBy('task.deadline', "ASC");
+
+
+        return $query->getQuery()->getResult();
+    }
 }
