@@ -24,8 +24,8 @@
                         <p>{{ task.description }}</p>
                         <p><b>Créée le</b> : {{ task.dateCreated | intl_date('EEEE d LLLL y')  }}</p>
                         <p><b>Deadline</b> : {{ task.deadline | intl_date('EEEE d LLLL y') }}</p>
-                        <p><b>Durée estimée</b> : {{ task.estimatedTime }}</p>
-                        <p><b>Durée travaillée</b>: {{ chronometersTotal }}</p>
+                        <p><b>Durée estimée</b> : {{ task.estimatedTime | toTime }}</p>
+                        <p><b>Durée travaillée</b>: {{ chronometersTotal | toTime }}</p>
                         <br/>
                         <p><span class="label label-primary">{{ task.state }}</span></p>
                     </div>
