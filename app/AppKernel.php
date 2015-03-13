@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Ares\CoreBundle\AresCoreBundle(),
 
             new FOS\UserBundle\FOSUserBundle(),
+            new Ares\UserBundle\AresUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

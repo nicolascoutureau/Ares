@@ -29,7 +29,7 @@ class Usertask
     private $task;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Ares\CoreBundle\Entity\User", inversedBy="usertasks")
+     * @ORM\ManyToOne(targetEntity="Ares\UserBundle\Entity\User", inversedBy="usertasks")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
