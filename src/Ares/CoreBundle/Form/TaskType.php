@@ -38,7 +38,7 @@ class TaskType extends AbstractType
                 'attr' => array(
                     'class' => 'select2'
                 ),
-                'class'    => 'AresUserBundle:User',
+                'class'    => 'AresCoreBundle:User',
                 'required' => false,
                 'property' => 'username',
                 'expanded' => false,
