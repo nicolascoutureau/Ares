@@ -1,3 +1,5 @@
+{% set title_for_layout = 'Ares' %}
+
 {% extends 'AresCoreBundle::layout.html.twig' %}
 
 {% block content -%}
@@ -25,7 +27,7 @@
                             <td>{{ usertask.task.name }}</td>
                             <td>{{ usertask.task.description | truncate(20, true, '...') }}</td>
                             <td>{{ usertask.task.deadline | date('d/m/Y') }}</td>
-                            <td class="tableEstimatedTime">{{ usertask.task.estimatedtime |toTime }}</td>
+                            <td class="tableEstimatedTime" data-time="{{ usertask.task.estimatedtime }}">{{ usertask.task.estimatedtime | toTime }}</td>
                             <td class="tableTimePerso">{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id, 'typeTime': 'perso' })) }}</td>
                             <td class="tableTime">{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id, 'typeTime' : 'total' })) }}</td>
                             <td><span class="label label-{{ usertask.task.state }} label-mini">{{ usertask.task.state | title }}</span></td>
@@ -44,18 +46,19 @@
 
     <div class="chronometer" id="draggable">
         <h2>Chronometer</h2>
-        <div>
-            <select id="selectTask"> 
+        <div style="margin: 10px 0;">
+            <select id="selectTask" class="form-control"> 
                 <option value="">Select a task</option>
                 {% for usertask in usertasks %}    
                     <option value="{{ usertask.task.id }}">{{ usertask.task.name }}</option>
                 {% endfor %}
             </select>
         </div>
-        <div class="timePerso">0:00:00</div>
-        <div class="time">0:00:00</div>
-        <a href="" class="startBtn">Start</a>
-        <a href="" class="stopBtn">Stop</a>
+        <div class="pull-left labelTempsChrono">Temps perso :</div><div class="timePerso">0:00:00</div>
+        <div class="pull-left labelTempsChrono">Temps total :</div><div class="time">0:00:00</div>
+        <br>
+        <a href="" class="startBtn btn btn-primary pull-right" style="margin-left: 5px;">Start</a>
+        <a href="" class="stopBtn btn btn-danger pull-right">Stop</a>
     </div>
 
 {% endblock %}
@@ -76,6 +79,12 @@
             filter:progid:DXImageTransform.Microsoft.Shadow(color=#cfcfcf, Direction=134, Strength=10);
             cursor: move;
             border: 1px solid lightgrey;
+        }
+        
+        .labelTempsChrono {
+           margin-right: 5px;
+           font-weight: bold;
+           width: 90px;
         }
     </style>
 {%  endblock %}
@@ -98,7 +107,8 @@
                     taskLaunched = false,
                     interval = 1000,
                     timer = null,
-                    taskRowSelected;
+                    taskRowSelected
+                    tempsDepasse = false;
                     
 
 
@@ -211,11 +221,19 @@
                 $('.time').html(secondsToTime(value));
                 $('.timePerso').html(secondsToTime(valuePerso));
                 
-                var estimatedTime = $(taskRowSelected).find('.tableEstimatedTime').html();
-                var totalTime = Math.round((Number(value) / 60));
+                var estimatedTime = $(taskRowSelected).find('.tableEstimatedTime').data('time');
                 
-                if (totalTime >  (Number(estimatedTime) + (20 * Number(estimatedTime) / 100))) {
-                    console.log('Temps dépassé');
+                //var totalTime = Math.round((Number(value) / 60));
+                
+                var totalTime = Math.round(Number(value));
+                
+                console.log(totalTime);
+                console.log(Number(estimatedTime) + (20 * Number(estimatedTime) / 100));
+
+                
+                if (totalTime >  (Number(estimatedTime) + (20 * Number(estimatedTime) / 100)) && tempsDepasse === false) {
+                    alert('Temps dépassé de 20%');
+                    tempsDepasse = true;
                 }
                 
 

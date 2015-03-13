@@ -1,10 +1,12 @@
 <ul class="nav pull-right top-menu">
+    {% if is_granted('ROLE_ADMIN') %}
     <li>
         <a href="{{ path('admin_task_index') }}" target="_blank" style="padding: 6px 15px 5px !important">
             <i class="fa fa-eye"></i>
             Voir le site
         </a>
     </li>
+    {% endif %}
     <!-- user login dropdown start-->
     {% if app.user is not empty %}
     <li class="dropdown">

@@ -1,5 +1,9 @@
+{% set title_for_layout = 'Administration - Ares' %}
+
 {% extends 'AresCoreBundle::layout.html.twig' %}
 
+    
+    
 {% block content -%}
     {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Liste des Taches'} %}
     {% block tools %}
