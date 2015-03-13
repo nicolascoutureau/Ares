@@ -35,9 +35,13 @@ class TaskType extends AbstractType
                 'multiple'  => false,
             ))
             ->add('users', 'entity', array(
+                'attr' => array(
+                    'class' => 'select2'
+                ),
                 'class'    => 'AresCoreBundle:User',
                 'required' => false,
                 'property' => 'username',
+                'expanded' => false,
                 'multiple' => true))               
 //            ->add('timespent', 'text')               
         ;
