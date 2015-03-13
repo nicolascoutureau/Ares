@@ -39,17 +39,18 @@ class Usertask
    */    
     private $assignation = true;
     /**
-     * @ORM\Column(name="date_invoke", type="datetime")
+     * @ORM\Column(name="date_invoke", type="datetime", nullable=true)
      */
     private $dateinvoke;
     /**
-     * @ORM\Column(name="date_revoke", type="datetime")
+     * @ORM\Column(name="date_revoke", type="datetime", nullable=true)
      */
     private $daterevoke;
     
     public function __construct() {
         $this->chronometers = new ArrayCollection();
     }
+
     public function addChronometer(\Ares\CoreBundle\Entity\Chronometer $chronometer)
     {
         $this->chronometers[] = $chronometer;
