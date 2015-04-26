@@ -22,9 +22,9 @@
         <link rel="stylesheet" href="{{ asset('bundles/arescore/css/style.css') }}"/>
         <link rel="stylesheet" href="{{ asset('bundles/arescore/css/style-responsive.css') }}"/>
         <link rel="stylesheet" href="{{ asset('bundles/arescore/js/advanced-datatable/css/demo_page.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('bundles/arescore/js/advanced-datatable/css/demo_table.css') }}"/>
         <link rel="stylesheet" href="{{ asset('bundles/arescore/js/data-tables/DT_bootstrap.css') }}"/>
         <link rel="stylesheet" href="{{ asset('bundles/arescore/js/nestable/jquery.nestable.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bundles/arescore/js/select2/select2.css') }}"/>
         {% stylesheets %}
         <link href="{{ asset_url }}" rel="stylesheet" type="text/css" media="screen" />
         {% endstylesheets  %}
@@ -36,7 +36,7 @@
             <!--logo start-->
             <div class="brand">
                 <a href="{{ path('admin_task_index') }}" class="logo">
-                    <img src="{{ asset('bundles/arescore/images/logo.png') }}" alt="" style="max-height: 50px">
+                    Projet Ares
                 </a>
                 <div class="sidebar-toggle-box">
                     <div class="fa fa-bars"></div>
@@ -155,6 +155,7 @@
             'bundles/arescore/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'
             'bundles/arescore/js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js'
             'bundles/arescore/js/nestable/jquery.nestable.js'
+            'bundles/arescore/js/select2/select2.js'
             'bundles/arescore/js/scripts.js'
             output='js/backoffice.min.js'
         %}

@@ -49,7 +49,7 @@ class Task
      */
     private $estimated_time;
     /**
-     * @ORM\Column(name="state", type="string", columnDefinition="ENUM('Assigned','Not Assigned','In Progress','Completed','Canceled')")
+     * @ORM\Column(name="state", type="string")
      */
     private $state;
     /**

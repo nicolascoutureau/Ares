@@ -1,3 +1,7 @@
+ares_user:
+    resource: "@AresUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
 core_admin:
     resource: "@AresCoreBundle/Controller/AdminController.php"
     type:     annotation

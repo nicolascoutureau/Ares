@@ -224,14 +224,14 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         if ($id == 0) {
-            $users = $em->getRepository('AresCoreBundle:User')->findAll();
+            $users = $em->getRepository('AresUserBundle:User')->findAll();
 
             return $this->render('AresCoreBundle:Historical:users.html.twig', array(
                 'users' => $users,
                 'userId' => $id
             ));
     } else {
-        $user = $em->getRepository('AresCoreBundle:User')->find($id);
+        $user = $em->getRepository('AresUserBundle:User')->find($id);
         $jsonGantt = array("data" => array(), "links" => array());
         $i = $j = $k = 0;
         foreach ($user->getUsertasks() as $UserTask) {

@@ -1,6 +1,9 @@
+{% set title_for_layout = 'Ares' %}
+
 {% extends 'AresCoreBundle::layout.html.twig' %}
 
 {% block content -%}
+<<<<<<< HEAD
   {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Mes taches'} %}
     {% block body %}
       <table class="table table-hover general-table">
@@ -51,6 +54,64 @@
           <option value="{{ usertask.task.id }}">{{ usertask.task.name }}</option>
         {% endfor %}
       </select>
+=======
+    {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Mes taches'} %}
+        {% block body %}
+            <table class="table table-hover general-table">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Deadline</th>
+                        <th>Estimated time</th>
+                        <th>Your spent time</th>
+                        <th>Total spent time</th>
+                        <th>State</th>
+                        <th>Users</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usertask in usertasks %}
+                        <tr class="taskRow " data-taskId="{{ usertask.task.id }}">
+                            <td>{{ usertask.task.id }}</td>
+                            <td>{{ usertask.task.name }}</td>
+                            <td>{{ usertask.task.description | truncate(20, true, '...') }}</td>
+                            <td>{{ usertask.task.deadline | date('d/m/Y') }}</td>
+                            <td class="tableEstimatedTime" data-time="{{ usertask.task.estimatedtime }}">{{ usertask.task.estimatedtime | toTime }}</td>
+                            <td class="tableTimePerso">{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id, 'typeTime': 'perso' })) }}</td>
+                            <td class="tableTime">{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id, 'typeTime' : 'total' })) }}</td>
+                            <td><span class="label label-{{ usertask.task.state }} label-mini">{{ usertask.task.state | title }}</span></td>
+                            <td>
+                                {% for user in usertask.task.users %}
+                                    {{ user.username | title }}{% if loop.last is same as(false) %},{% endif %}
+                                {% endfor %}
+                            </td>
+                            <td><a href="#" class="selectBtn">Select task</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endblock %}
+    {% endembed %}
+
+    <div class="chronometer" id="draggable">
+        <h2>Chronometer</h2>
+        <div style="margin: 10px 0;">
+            <select id="selectTask" class="form-control"> 
+                <option value="">Select a task</option>
+                {% for usertask in usertasks %}    
+                    <option value="{{ usertask.task.id }}">{{ usertask.task.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="pull-left labelTempsChrono">Temps perso :</div><div class="timePerso">0:00:00</div>
+        <div class="pull-left labelTempsChrono">Temps total :</div><div class="time">0:00:00</div>
+        <br>
+        <a href="" class="startBtn btn btn-primary pull-right" style="margin-left: 5px;">Start</a>
+        <a href="" class="stopBtn btn btn-danger pull-right">Stop</a>
+>>>>>>> origin/master
     </div>
     <div class="timePerso">0:00:00</div>
     <div class="time">0:00:00</div>
@@ -61,6 +122,7 @@
 {% endblock %}
 
 {% block stylesheet_for_layout %}
+<<<<<<< HEAD
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
   <style>
     /*chronometre*/
@@ -78,6 +140,31 @@
       border: 1px solid lightgrey;
     }
   </style>
+=======
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+    <style>
+        /*chronometre*/
+        .chronometer{
+            background: white;
+            padding:10px 20px;
+            border-radius: 10px;
+            position: absolute;
+            -moz-box-shadow: 1px 1px 10px 0px #cfcfcf;
+            -webkit-box-shadow: 1px 1px 10px 0px #cfcfcf;
+            -o-box-shadow: 1px 1px 10px 0px #cfcfcf;
+            box-shadow: 1px 1px 10px 0px #cfcfcf;
+            filter:progid:DXImageTransform.Microsoft.Shadow(color=#cfcfcf, Direction=134, Strength=10);
+            cursor: move;
+            border: 1px solid lightgrey;
+        }
+        
+        .labelTempsChrono {
+           margin-right: 5px;
+           font-weight: bold;
+           width: 90px;
+        }
+    </style>
+>>>>>>> origin/master
 {%  endblock %}
 
 {% block javascript_for_layout %}
@@ -113,10 +200,21 @@
         // want to be respectful there is no need to bother them any more.
       }
 
+<<<<<<< HEAD
       // Draggable
       $(function () {
         $("#draggable").draggable();
       });
+=======
+            // Taches
+            var taskSelected = false,
+                    taskLaunched = false,
+                    interval = 1000,
+                    timer = null,
+                    taskRowSelected
+                    tempsDepasse = false;
+                    
+>>>>>>> origin/master
 
       // Taches
       var taskSelected = false,
@@ -135,7 +233,132 @@
           return false;
         }
 
+<<<<<<< HEAD
         var taskId = $(this).val();
+=======
+                taskSelected = true;
+
+                // Requete ajax pour récuperer le temps déja travaillé
+                $.ajax({
+                    type: "GET",
+                    url: '/chronometer/timespent/' + taskId,
+                    dataType: "json",
+                    success: function (data) {
+
+
+
+                        $('.timePerso').html(secondsToTime(data.timespent.perso));
+                        $('.time').html(secondsToTime(data.timespent.total));
+
+                        taskSelected = true;
+                    }
+                });                
+                
+                
+                
+            });
+
+
+            $('.selectBtn').on('click', function (e) {
+                e.preventDefault();
+
+                if (taskLaunched) {
+                    console.log('Stoppez la tache en cours avant d\'en selectionner une autre');
+                    return false;
+                }
+
+                
+                
+                var taskId = $(this).parent().parent().attr('data-taskId');
+                
+                
+
+                $('#selectTask').val(taskId);
+
+                taskSelected = true;
+
+                // Requete ajax pour récuperer le temps déja travaillé
+                $.ajax({
+                    type: "GET",
+                    url: '/chronometer/timespent/' + taskId,
+                    dataType: "json",
+                    success: function (data) {
+
+
+
+                        $('.timePerso').html(secondsToTime(data.timespent.perso));
+                        $('.time').html(secondsToTime(data.timespent.total));
+
+                        taskSelected = true;
+                    }
+                });
+            });
+
+
+            $('.startBtn').on('click', function (e) {
+                e.preventDefault();
+                if (taskSelected) {
+                    console.log('start');
+                    startChrono();
+                    taskLaunched = true;
+
+                    // Lance le timer
+                    if (timer !== null)
+                        return;
+                    value = timeToSeconds($('.time').html());
+                    valuePerso = timeToSeconds($('.timePerso').html());
+
+                    incrementTime();
+                    timer = setInterval(function () {
+                        incrementTime();
+                    }, interval);
+
+                } else {
+                    alert('Selectionnez une tache');
+                }
+            });
+
+            var incrementTime = function () {
+                value = Math.round(value);
+                valuePerso = Math.round(valuePerso);
+                
+                taskRowSelected = $('.taskRow[data-taskId="' + $('#selectTask').val() + '"]');
+                
+                
+                
+                $(taskRowSelected).find('.tableTime').html(secondsToTime(value));
+                $(taskRowSelected).find('.tableTimePerso').html(secondsToTime(valuePerso));
+                
+                $('.time').html(secondsToTime(value));
+                $('.timePerso').html(secondsToTime(valuePerso));
+                
+                var estimatedTime = $(taskRowSelected).find('.tableEstimatedTime').data('time');
+                
+                //var totalTime = Math.round((Number(value) / 60));
+                
+                var totalTime = Math.round(Number(value));
+                
+                console.log(totalTime);
+                console.log(Number(estimatedTime) + (20 * Number(estimatedTime) / 100));
+
+                
+                if (totalTime >  (Number(estimatedTime) + (20 * Number(estimatedTime) / 100)) && tempsDepasse === false) {
+                    alert('Temps dépassé de 20%');
+                    tempsDepasse = true;
+                }
+                
+
+                
+                
+                
+                if (value % 5 === 0) {
+                    updateChrono();
+                }
+
+                value++;
+                valuePerso++;
+            }
+>>>>>>> origin/master
 
 
 

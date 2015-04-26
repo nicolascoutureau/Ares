@@ -1,5 +1,9 @@
+{% set title_for_layout = 'Administration - Ares' %}
+
 {% extends 'AresCoreBundle::layout.html.twig' %}
 
+    
+    
 {% block content -%}
     {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Liste des Taches'} %}
     {% block tools %}
@@ -55,6 +59,12 @@
         </table>
     {% endblock %}
     {% endembed %}
+{% endblock %}
+
+{% block javascript_for_layout %}
+    <script>
+        $('.table').DataTable();
+    </script>
 {% endblock %}
 
 
