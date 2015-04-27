@@ -28,14 +28,15 @@ class TaskType extends AbstractType
             ->add('estimated_time_to_convert','time', array('mapped' => false, 'label' => 'Temps estimé'))    
             ->add('state', 'choice', array(
                 'choices'   => array(
-                    'Assigned'   => 'Assigned',
-                    'In Progress' => 'In Progress',
-                    'Completed'   => 'Completed',
-                    'Canceled' => 'Canceled',
-                    'Not Assigned' => 'Not Assigned'
+                    'Not Assigned'   => '-- Forcer un état --',
+//                    'In Progress' => 'In Progress',
+                    'Completed'   => 'Tâche terminée',
+                    'Canceled' => 'Tâche annulée',
+//                    'Not Assigned' => 'Not Assigned'
                 ),
                 'multiple'  => false,
-                'label' => 'État'
+                'label' => 'État',
+//                'empty_value' => '-- Forcer un état --',
             ))
             ->add('users', 'entity', array(
                 'attr' => array(

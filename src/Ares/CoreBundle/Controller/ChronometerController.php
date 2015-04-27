@@ -31,7 +31,10 @@ class ChronometerController extends Controller
         // Créé un nouveau chrono avec l'id du bon usertask
         $chronometer = new chronometer();
         $chronometer->setUsertask($currentUsertask[0]);
-
+        
+        $currentTask = $em->getRepository('AresCoreBundle:Task')->find($taskId);
+        $currentTask->setState('In Progress');
+        
         // Enregistre la usertask
         $em->persist($chronometer);
         $em->flush();
@@ -61,12 +64,25 @@ class ChronometerController extends Controller
 
         // Update la date de fin
         $chronometer->setStopdate(new \Datetime());
+        
+        $stopChrono = $request->request->get('stopChrono');
+        
+        
+        if ($stopChrono == "true") {
+          $currentTask = $em->getRepository('AresCoreBundle:Task')->find($taskId);
+          $currentTask->setState('Assigned');                  
+        } else {
+          $currentTask = $em->getRepository('AresCoreBundle:Task')->find($taskId);
+          $currentTask->setState('In Progress');           
+        }
+
+        
         // Persiste
         $em->persist($chronometer);
         $em->flush();
 
         //reponse
-        $response = array("code" => 200, "success" => true, "data" => 'data');
+        $response = array("code" => 200, "success" => true, "data" => $stopChrono);
         return new Response(json_encode($response));
     }
 

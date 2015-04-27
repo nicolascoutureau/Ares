@@ -130,26 +130,44 @@ class AdminController extends Controller
         $editForm = $this->createEditForm($entityTask);
         $deleteForm = $this->createDeleteForm($id);
 
+        
+        
         $editForm->handleRequest($request);
-
+        
         if ($editForm->isValid()) {
 
             //Gere l'assignation
             $postArray = $request->request->get('ares_corebundle_task');
-            $selectedUsers = $postArray['users'];
+            
+            if (isset($postArray['users'])) {
+              $selectedUsers = $postArray['users'];
+            }
+            
             $usertasks = $entityTask->getUsertasks();
-
+            
+            $assigned = false;
+            
             foreach ($usertasks as $usertask) {
                 if ($usertask->getId() !== null) {
                     $user = $usertask->getUser();
-                    if (in_array($user->getId(), $selectedUsers)) {
+                    if (isset($selectedUsers) && in_array($user->getId(), $selectedUsers)) {
                         $usertask->setAssignation(true);
+                        $assigned = true;
                     } else {
                         $usertask->setAssignation(false);
                     }
                 }
+            } 
+            
+            
+            if ($entityTask->getState() != 'Completed' && $entityTask->getState() != 'Canceled') {
+              if ($assigned) {
+                $entityTask->setState('Assigned');
+              } else {
+                $entityTask->setState('Not Assigned');
+              }              
             }
-
+            
             $em->flush();
             $this->get('session')->getFlashBag()->add(
                 'success', 'La tâche a bien été modifée!'

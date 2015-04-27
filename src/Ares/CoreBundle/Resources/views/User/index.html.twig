@@ -74,11 +74,6 @@
     <a href="" class="startBtn btn btn-primary pull-right" style="margin-left: 5px;">Start</a>
     <a href="" class="stopBtn btn btn-danger pull-right">Stop</a>
   </div>
-  <div class="timePerso">0:00:00</div>
-  <div class="time">0:00:00</div>
-  <a href="" class="startBtn">Start</a>
-  <a href="" class="stopBtn">Stop</a>
-</div>
 
 {% endblock %}
 
@@ -270,6 +265,11 @@ function number_format(number, decimals, dec_point, thousands_sep) {
           value = timeToSeconds($('.time').html());
           valuePerso = timeToSeconds($('.timePerso').html());
           incrementTime();
+          $(taskRowSelected).find('.label-mini').html('In Progress');
+          $(taskRowSelected).find('.label-mini').removeClass('label-Assigned');
+          $(taskRowSelected).find('.label-mini').addClass('label-In Progress');
+          
+          
           timer = setInterval(function () {
             incrementTime();
           }, interval);
@@ -311,6 +311,8 @@ function number_format(number, decimals, dec_point, thousands_sep) {
         $(taskRowSelected).find('.tableTime').html(secondsToTime(value));
         $(taskRowSelected).find('.tableTimePerso').html(secondsToTime(valuePerso));
         
+        
+        
         $('.time').html(secondsToTime(value));
         $('.timePerso').html(secondsToTime(valuePerso));
         
@@ -345,7 +347,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
         }
 
         if (value % 5 === 0) {
-          updateChrono();
+          updateChrono(false);
         }
 
         value++;
@@ -357,12 +359,19 @@ function number_format(number, decimals, dec_point, thousands_sep) {
         e.preventDefault();
         if (taskSelected && taskLaunched) {
           console.log('stop');
-          updateChrono();
+          updateChrono(true);
           clearInterval(timer);
           timer = null;
           taskLaunched = false;
           $('#selectTask').removeAttr('disabled');
           tasksNotifiedArray = new Array();
+          
+          
+          $(taskRowSelected).find('.label-mini').html('Assigned');
+          $(taskRowSelected).find('.label-mini').removeClass('label-In Progress');
+          $(taskRowSelected).find('.label-mini').addClass('label-Assigned');          
+          
+          
         } else {
           alert('Commencez une tâche');
         }
@@ -387,16 +396,20 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 
 
       // Function qui update le chrono
-      var updateChrono = function () {
+      var updateChrono = function (stopChrono) {
+        
+        console.log('ok: ' +  stopChrono);
+        
         $.ajax({
           type: "POST",
           url: '/chronometer/update',
           data: {
-            'taskId': $('#selectTask').val()
+            'taskId': $('#selectTask').val(),
+            'stopChrono' : stopChrono
           },
           dataType: "json",
           success: function (response) {
-            console.log(response);{#                        console.log($('.time').html());#}
+            console.log(response);
           }
         });
       };
