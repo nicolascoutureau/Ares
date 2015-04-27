@@ -3,22 +3,22 @@
 {% extends 'AresCoreBundle::layout.html.twig' %}
 
 {% block content -%}
-  {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Mes taches'} %}
+  {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Mes tâches'} %}
     {% block body %}
       <table class="table table-hover general-table">
         <thead>
           <tr>
-            <th>id</th>
-            <th>Name</th>
+            <th>ID</th>
+            <th>Nom</th>
             <th>Description</th>
-            <th>Deadline</th>
-            <th>Estimated time</th>
-            <th>Your spent time</th>
-            <th>Total spent time</th>
+            <th>Échéance</th>
+            <th>Temps estimé</th>
+            <th>Temps passé PERSO</th>
+            <th>Temps passé TOTAL</th>
             <th>Gestion du temps</th>
-            <th>State</th>
-            <th>Users</th>
-            <th>Action</th>
+            <th>État</th>
+            <th>Utilisateurs</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -238,7 +238,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
       $('#selectTask').on('change', function (e) {
         e.preventDefault();
         if (taskLaunched) {
-          console.log('Stoppez la tache en cours avant d\'en selectionner une autre');
+          console.log('Stoppez la tâche en cours avant d\'en selectionner une autre');
           return false;
         }
 
@@ -274,7 +274,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
             incrementTime();
           }, interval);
         } else {
-          alert('Selectionnez une tache');
+          alert('Selectionnez une tâche');
         }
       });
 
@@ -283,7 +283,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
       $('.selectBtn').on('click', function (e) {
         e.preventDefault();
         if (taskLaunched) {
-          console.log('Stoppez la tache en cours avant d\'en selectionner une autre');
+          console.log('Stoppez la tâche en cours avant d\'en selectionner une autre');
           return false;
         }
         var taskId = $(this).parent().parent().attr('data-taskId');
@@ -364,7 +364,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
           $('#selectTask').removeAttr('disabled');
           tasksNotifiedArray = new Array();
         } else {
-          alert('Commencez une tache');
+          alert('Commencez une tâche');
         }
       });
 

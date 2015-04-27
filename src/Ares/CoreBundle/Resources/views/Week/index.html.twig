@@ -97,7 +97,7 @@
                                                 </span>
                                                 <span class="timeline-date">08:25 am</span>
                                                 <h1 class="red">De {{ time.startdate | date('h:i:s') }} à {{ time.stopdate | date('h:i:s') }}</h1>
-                                                <p>{{ time.usertask.user.username }} a travaillé sur la tache <a
+                                                <p>{{ time.usertask.user.username }} a travaillé sur la tâche <a
                                                             href="{{ path('admin_task_show', {'id' : time.usertask.task.id } ) }}">{{ time.usertask.task.name }}</a></p>
                                             </div>
                                         </div>

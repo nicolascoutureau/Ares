@@ -5,9 +5,9 @@
     
     
 {% block content -%}
-    {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Liste des Taches'} %}
+    {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Liste des Tâches'} %}
     {% block tools %}
-        <a class="btn btn-primary btn-round tooltips" href="{{ path('admin_task_create') }}" title="Ajouter une tache">
+        <a class="btn btn-primary btn-round tooltips" href="{{ path('admin_task_create') }}" title="Ajouter une tâche">
             <i class="fa fa-plus"></i>
             Ajouter
         </a>
@@ -16,14 +16,14 @@
         <table class="table table-hover general-table">
             <thead>
             <tr>
-                <th>id</th>
-                <th>Name</th>
+                <th>ID</th>
+                <th>Nom</th>
                 <th>Description</th>
-                <th>Deadline</th>
-                <th>Estimated time</th>
-                <th>Time Spent</th>
-                <th>State</th>
-                <th>Users</th>
+                <th>Échéance</th>
+                <th>Temps estimé</th>
+                <th>Time passé</th>
+                <th>État</th>
+                <th>Utilisateurs</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -43,13 +43,13 @@
                             {% endfor %}
                         </td>
                         <td class="listing-actions three">
-                            <a class="btn btn-default btn-sm tooltips" href="{{ path('admin_task_show', { 'id': task.id }) }}" title="Voir la tache" >
+                            <a class="btn btn-default btn-sm tooltips" href="{{ path('admin_task_show', { 'id': task.id }) }}" title="Voir la tâche" >
                                 <i class="fa fa-eye"></i>
                             </a>
-                            <a class="btn btn-primary btn-sm tooltips" href="{{ path('admin_task_edit', { 'id': task.id }) }}" title="Editer cette tache" >
+                            <a class="btn btn-primary btn-sm tooltips" href="{{ path('admin_task_edit', { 'id': task.id }) }}" title="Editer cette tâche" >
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a class="btn btn-danger btn-sm tooltips" href="{{ path('admin_task_delete', { 'id': task.id }) }}" title="Supprimer cette tache" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tache');">
+                            <a class="btn btn-danger btn-sm tooltips" href="{{ path('admin_task_delete', { 'id': task.id }) }}" title="Supprimer cette tâche" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche');">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>

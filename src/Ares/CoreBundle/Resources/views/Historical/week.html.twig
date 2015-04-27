@@ -1,9 +1,9 @@
 {% extends 'AresCoreBundle::layout.html.twig' %}
 
 {% block content -%}
-    {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Liste des Taches'} %}
+    {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Liste des Tâches'} %}
     {% block tools %}
-        <a class="btn btn-primary btn-round tooltips" href="{{ path('admin_task_create') }}" title="Ajouter une tache">
+        <a class="btn btn-primary btn-round tooltips" href="{{ path('admin_task_create') }}" title="Ajouter une tâche">
             <i class="fa fa-plus"></i>
             Ajouter
         </a>
@@ -39,10 +39,10 @@
                             {% endfor %}
                         </td>
                         <td class="listing-actions two">
-                            <a class="btn btn-primary btn-sm tooltips" href="{{ path('admin_task_edit', { 'id': task.id }) }}" title="Editer cette tache" >
+                            <a class="btn btn-primary btn-sm tooltips" href="{{ path('admin_task_edit', { 'id': task.id }) }}" title="Editer cette tâche" >
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a class="btn btn-danger btn-sm tooltips" href="{{ path('admin_task_delete', { 'id': task.id }) }}" title="Supprimer cette tache" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tache');">
+                            <a class="btn btn-danger btn-sm tooltips" href="{{ path('admin_task_delete', { 'id': task.id }) }}" title="Supprimer cette tâche" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche');">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>

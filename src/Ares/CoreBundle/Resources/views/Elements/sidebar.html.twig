@@ -10,7 +10,7 @@
     <li class="sub-menu">
         <a href="javascript:;">
             <i class="fa fa-font"></i>
-            <span>Taches</span>
+            <span>Tâches</span>
         </a>
         
         
@@ -18,13 +18,13 @@
         {% if is_granted('ROLE_ADMIN') %}
         <ul class="sub">
             <li>
-                <a href="{{ path('admin_task_index') }}">Gerer les taches</a>
+                <a href="{{ path('admin_task_index') }}">Gérer les tâches</a>
             </li>
         </ul>
        {% endif %}
         <ul class="sub">
             <li>
-                <a href="{{ path('user_task_index') }}">Voir mes taches</a>
+                <a href="{{ path('user_task_index') }}">Voir mes tâches</a>
             </li>
         </ul>
         {% if is_granted('ROLE_ADMIN') %}
@@ -45,7 +45,7 @@
         <ul class="sub" style="display: block;">
             <li><a href="{{ path('admin_histo_week') }}">Historique de la semaine</a></li>
             <li><a href="{{ path('admin_histo_users') }}">Details par Utilisateur</a></li>
-            <li><a href="{{ path('admin_histo_tasks') }}">Details par Tache</a></li>
+            <li><a href="{{ path('admin_histo_tasks') }}">Details par Tâche</a></li>
         </ul>
     </li>
     {% endif %}    

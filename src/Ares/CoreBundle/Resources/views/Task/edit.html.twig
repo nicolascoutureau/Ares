@@ -1,8 +1,8 @@
 {% extends 'AresCoreBundle::layout.html.twig' %}
 {% block content %}
-  {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Editer un la tache'} %}
+  {% embed 'AresCoreBundle:Elements:panel.html.twig' with {title:'Editer la tâche'} %}
     {% block tools %}
-      <a class="btn btn-default btn-round tooltips" href="{{ path('admin_task_index') }}" title="Retour à la liste des taches">
+      <a class="btn btn-default btn-round tooltips" href="{{ path('admin_task_index') }}" title="Retour à la liste des tâches">
         <i class="fa fa-chevron-left"></i>
         Retour
       </a>

@@ -12,7 +12,7 @@ class TaskType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name','text')
+            ->add('name','text', array('label' => 'Nom'))
             ->add('description','textarea')
             ->add('deadline', 'datetime', array(
                 'widget' => 'single_text',
@@ -21,7 +21,8 @@ class TaskType extends AbstractType
                 'format' => 'dd-MM-yyyy HH:mm',
                 'attr'=> [
                     'class' => 'datetimepicker'
-                ]
+                ],
+                'label' => 'Échéance'
             ))
             ->add('estimated_time','hidden')
             ->add('estimated_time_to_convert','time', array('mapped' => false, 'label' => 'Temps estimé'))    
@@ -34,6 +35,7 @@ class TaskType extends AbstractType
                     'Not Assigned' => 'Not Assigned'
                 ),
                 'multiple'  => false,
+                'label' => 'État'
             ))
             ->add('users', 'entity', array(
                 'attr' => array(
@@ -43,7 +45,9 @@ class TaskType extends AbstractType
                 'required' => false,
                 'property' => 'username',
                 'expanded' => false,
-                'multiple' => true))               
+                'multiple' => true,
+                'label' => 'Utilisateurs'
+                ))               
 //            ->add('timespent', 'text')               
         ;
         

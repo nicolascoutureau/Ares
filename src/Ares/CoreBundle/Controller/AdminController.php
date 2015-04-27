@@ -52,7 +52,7 @@ class AdminController extends Controller
             $em->persist($entity);
             $em->flush();
             $this->get('session')->getFlashBag()->add(
-                'success', 'La tache a bien été ajoutée!'
+                'success', 'La tâche a bien été ajoutée!'
             );
             return $this->redirect($this->generateUrl('admin_task_index'));
         }
@@ -75,7 +75,7 @@ class AdminController extends Controller
             'action' => $this->generateUrl('admin_task_create'),
             'method' => 'POST',
         ));
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Créer'));
         return $form;
     }
 
@@ -111,7 +111,7 @@ class AdminController extends Controller
             'action' => $this->generateUrl('admin_task_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Mettre à jour'));
         return $form;
     }
 
@@ -152,7 +152,7 @@ class AdminController extends Controller
 
             $em->flush();
             $this->get('session')->getFlashBag()->add(
-                'success', 'La tache a bien été modifée!'
+                'success', 'La tâche a bien été modifée!'
             );
             return $this->redirect($this->generateUrl('admin_task_edit', array('id' => $id)));
         }
@@ -180,7 +180,7 @@ class AdminController extends Controller
             $em->remove($entity);
             $em->flush();
             $this->get('session')->getFlashBag()->add(
-                'notice', 'La tache a bien été supprimée!'
+                'notice', 'La tâche a bien été supprimée!'
             );
         }
         return $this->redirect($this->generateUrl('admin_task_index'));
