@@ -36,7 +36,14 @@
               <td class="tableTime">
                 {{ usertask['totaltime'] | toTime }}
               </td>
-              <td class="timePercent"></td>
+              <td class="timePercent">
+                {% set timePercent = (usertask['totaltime'] * 100 / usertask[0].task.estimatedtime) | number_format(0, '.', '') %}
+                {% if timePercent > 120 %}
+                  <span class="text-danger">{{ timePercent }}%</span>
+                  {% else %}
+                    <span class="text-success">{{ timePercent }}%</span>
+                  {% endif %}
+              </td>
               <td><span class="label label-{{ usertask[0].task.state }} label-mini">{{ usertask[0].task.state | title }}</span></td>
               <td>
                 {% for user in usertask[0].task.users %}
