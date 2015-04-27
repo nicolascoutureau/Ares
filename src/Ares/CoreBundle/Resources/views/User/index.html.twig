@@ -311,7 +311,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
         var estimatedTime = $(taskRowSelected).find('.tableEstimatedTime').data('time');
         var totalTime = Math.round((Number(value)));
         
-        var percentTime = number_format(totalTime * 100 / Number(estimatedTime));
+        var percentTime = number_format((totalTime * 100 / Number(estimatedTime)), 0, '.', '');
         
         if (percentTime > 120) {
           $(taskRowSelected).find('.timePercent').html('<span class="text-danger">' + percentTime +  '%</span>');
