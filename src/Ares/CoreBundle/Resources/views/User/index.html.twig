@@ -15,6 +15,7 @@
             <th>Estimated time</th>
             <th>Your spent time</th>
             <th>Total spent time</th>
+            <th>Gestion du temps</th>
             <th>State</th>
             <th>Users</th>
             <th>Action</th>
@@ -22,17 +23,23 @@
         </thead>
         <tbody>
           {% for usertask in usertasks %}
-            <tr class="taskRow " data-taskId="{{ usertask.task.id }}">
-              <td>{{ usertask.task.id }}</td>
-              <td>{{ usertask.task.name }}</td>
-              <td>{{ usertask.task.description | truncate(20, true, '...') }}</td>
-              <td>{{ usertask.task.deadline | date('d/m/Y') }}</td>
-              <td class="tableEstimatedTime" data-time="{{ usertask.task.estimatedtime }}">{{ usertask.task.estimatedtime | toTime }}</td>
-              <td class="tableTimePerso">{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id, 'typeTime': 'perso' })) }}</td>
-              <td class="tableTime">{{ render(controller("AresCoreBundle:Chronometer:timeSpentByTask", {'id': usertask.task.id, 'typeTime' : 'total' })) }}</td>
-              <td><span class="label label-{{ usertask.task.state }} label-mini">{{ usertask.task.state | title }}</span></td>
+            
+            <tr class="taskRow " data-taskId="{{ usertask[0].task.id }}">
+              <td>{{ usertask[0].task.id }}</td>
+              <td>{{ usertask[0].task.name }}</td>
+              <td>{{ usertask[0].task.description | truncate(20, true, '...') }}</td>
+              <td>{{ usertask[0].task.deadline | date('d/m/Y') }}</td>
+              <td class="tableEstimatedTime" data-time="{{ usertask[0].task.estimatedtime }}">{{ usertask[0].task.estimatedtime | toTime }}</td>
+              <td class="tableTimePerso">
+                {{ usertask['persotime'] | toTime }}
+              </td>
+              <td class="tableTime">
+                {{ usertask['totaltime'] | toTime }}
+              </td>
+              <td class="timePercent"></td>
+              <td><span class="label label-{{ usertask[0].task.state }} label-mini">{{ usertask[0].task.state | title }}</span></td>
               <td>
-                {% for user in usertask.task.users %}
+                {% for user in usertask[0].task.users %}
                   {{ user.username | title }}{% if loop.last is same as(false) %},{% endif %}
                 {% endfor %}
               </td>
@@ -50,7 +57,7 @@
       <select id="selectTask" class="form-control"> 
         <option value="">Select a task</option>
         {% for usertask in usertasks %}    
-          <option value="{{ usertask.task.id }}">{{ usertask.task.name }}</option>
+          <option value="{{ usertask[0].task.id }}">{{ usertask[0].task.name }}</option>
         {% endfor %}
       </select>
     </div>
@@ -296,12 +303,23 @@ function number_format(number, decimals, dec_point, thousands_sep) {
         taskRowSelected = $('.taskRow[data-taskId="' + $('#selectTask').val() + '"]');
         $(taskRowSelected).find('.tableTime').html(secondsToTime(value));
         $(taskRowSelected).find('.tableTimePerso').html(secondsToTime(valuePerso));
+        
         $('.time').html(secondsToTime(value));
         $('.timePerso').html(secondsToTime(valuePerso));
         
         
         var estimatedTime = $(taskRowSelected).find('.tableEstimatedTime').data('time');
         var totalTime = Math.round((Number(value)));
+        
+        var percentTime = number_format(totalTime * 100 / Number(estimatedTime));
+        
+        if (percentTime > 120) {
+          $(taskRowSelected).find('.timePercent').html('<span class="text-danger">' + percentTime +  '%</span>');
+        } else {
+          $(taskRowSelected).find('.timePercent').html('<span class="text-success">' + percentTime +  '%</span>');
+        }
+        
+        
         
         var percentExtraTime = number_format((totalTime * 100 / Number(estimatedTime)) - 100);
         
@@ -337,6 +355,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
           timer = null;
           taskLaunched = false;
           $('#selectTask').removeAttr('disabled');
+          tasksNotifiedArray = new Array();
         } else {
           alert('Commencez une tache');
         }

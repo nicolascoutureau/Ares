@@ -1,6 +1,9 @@
 <?php
+
 namespace Ares\CoreBundle\Entity;
+
 use Doctrine\ORM\EntityRepository;
+
 /**
  * UsertaskRepository
  *
@@ -9,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class UsertaskRepository extends EntityRepository
 {
- 
+
 //    public function myFindUsersAssigned(){
 //        $qb = $this->_em->createQueryBuilder();
 //        $qb->select('ut.user')
@@ -24,59 +27,103 @@ class UsertaskRepository extends EntityRepository
 //        
 //        return $qb->getQuery()->getResult();        
 //    }
-    
-    public function myFindByUserId($id)
-    {
-        $qb = $this->_em->createQueryBuilder();
-        $qb->select('ut')
+
+  public function myFindByUserId($id)
+  {
+    $qb = $this->_em->createQueryBuilder();
+    $qb->select('ut')
             ->from('AresCoreBundle:usertask', 'ut')
             ->where("ut.user = $id")
             ->groupBy('ut.task')
-        ;
-        return $qb->getQuery()->getResult();
-    }
-    
-    public function myFindByTaskId($id)
-    {
-        $qb = $this->_em->createQueryBuilder();
-        $qb->select('ut')
+    ;
+    return $qb->getQuery()->getResult();
+  }
+
+  public function myFindByTaskId($id)
+  {
+    $qb = $this->_em->createQueryBuilder();
+    $qb->select('ut')
             ->from('AresCoreBundle:usertask', 'ut')
             ->where("ut.task = $id")
             ->groupBy('ut.user')
-        ;
-        return $qb->getQuery()->getResult();
-    }
-    
-    public function myFindAll()
-    {
-        $qb = $this->_em->createQueryBuilder();
-        $qb->select('ut')
-            ->from('AresCoreBundle:usertask','ut')
+    ;
+    return $qb->getQuery()->getResult();
+  }
+
+  public function myFindAll()
+  {
+    $qb = $this->_em->createQueryBuilder();
+    $qb->select('ut')
+            ->from('AresCoreBundle:usertask', 'ut')
             ->groupBy('ut.task')
-        ;
-        return $qb->getQuery()->getResult();
-    }
+    ;
+    return $qb->getQuery()->getResult();
+  }
 
-    public function myFindByUserAndTask($userId, $taskId)
-    {
-        $qb = $this->_em->createQueryBuilder();
-        $qb->select('ut')
-           ->from('AresCoreBundle:usertask','ut')
-           ->where("ut.task = $taskId")
-           ->andWhere("ut.user = $userId");
+  public function myFindByUserAndTask($userId, $taskId)
+  {
+    $qb = $this->_em->createQueryBuilder();
+    $qb->select('ut')
+            ->from('AresCoreBundle:usertask', 'ut')
+            ->where("ut.task = $taskId")
+            ->andWhere("ut.user = $userId");
 
-        return $qb->getQuery()->setMaxResults(1)->getResult();
-    }
+    return $qb->getQuery()->setMaxResults(1)->getResult();
+  }
 
-    public function getUsertasksByUserId($userId){
-        $query = $this
+//    public function getUsertasksByUserId($userId){
+//        $query = $this
+//            ->createQueryBuilder('ut')
+//            ->join('ut.user', 'u')
+//            ->join('ut.task', 'task')
+//            ->where('u.id = :userID')
+//            ->setParameter("userID", $userId)
+//            ->orderBy('task.deadline', "ASC");
+//
+//        return $query->getQuery()->getResult();
+//    }
+  //////////////////////////////////////////////////////////////////
+
+  /*
+   * Récupérer toutes les usertasks
+   */
+
+
+
+  public function getUsertasksByUserId($user)
+  {
+
+    $query = $this
             ->createQueryBuilder('ut')
+            ->addSelect('t, sum(TIMESTAMPDIFF( second, c.startdate, c.stopdate)) AS persotime')
             ->join('ut.user', 'u')
-            ->join('ut.task', 'task')
-            ->where('u.id = :userID')
-            ->setParameter("userID", $userId)
-            ->orderBy('task.deadline', "ASC");
+            ->leftJoin('ut.chronometers', 'c')
+            ->join('ut.task', 't')
+            ->groupBy('t')
+            ->where('ut.assignation = :assignation')
+            ->setParameter('assignation', true)
+            ->andWhere('ut.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('t.deadline', "DESC")
+    ;
 
-        return $query->getQuery()->getResult();
-    }
+    return $query->getQuery()->getResult();
+  }
+
+  public function req2($tasks)
+  {
+    $query = $this
+            ->createQueryBuilder('ut')
+            ->addSelect('t, sum(TIMESTAMPDIFF( second, c.startdate, c.stopdate)) AS totaltime')
+            ->leftJoin('ut.chronometers', 'c')
+            ->join('ut.task', 't')
+            ->groupBy('t')
+            ->where('t.id IN (:uts)')
+            ->setParameter('uts', $tasks)
+            ->orderBy('t.deadline', "DESC")
+    ;
+
+    return $query->getQuery()->getResult();
+  }
+
 }
