@@ -23,7 +23,8 @@ class TaskType extends AbstractType
                     'class' => 'datetimepicker'
                 ]
             ))
-            ->add('estimated_time','integer')
+            ->add('estimated_time','hidden')
+            ->add('estimated_time_to_convert','time', array('mapped' => false, 'label' => 'Temps estimé'))    
             ->add('state', 'choice', array(
                 'choices'   => array(
                     'Assigned'   => 'Assigned',
