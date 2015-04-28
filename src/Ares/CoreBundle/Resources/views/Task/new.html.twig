@@ -14,3 +14,65 @@
         {% endblock %}
     {% endembed %}
 {% endblock %}
+
+{% block javascript_for_layout %}
+  <script>
+    $(function () {
+
+      var secondsToTime = function (s) {
+        var h = Math.floor(s / 3600); //Get whole hours
+        s -= h * 3600;
+        var m = Math.floor(s / 60); //Get remaining minutes
+        s -= m * 60;
+        
+        $('#ares_corebundle_task_estimated_time_to_convert_hour').val(Number(h));
+        $('#ares_corebundle_task_estimated_time_to_convert_minute').val(Number(m));
+        
+        return h + ":" + (m < 10 ? '0' + m : m) + ":" + (s < 10 ? '0' + s : s); //zero padding on minutes and seconds
+      };
+      
+      var timeToSeconds = function (time) {
+        time = time.split(':');
+        return(parseInt(time[0] * 3600) + parseInt(time[1] * 60) + parseInt(time[2]));
+      };      
+      
+      var updateEstimatedTimeHiddenField = function () {
+        var hourDropdown = $('#ares_corebundle_task_estimated_time_to_convert_hour');
+        var minuteDropdown = $('#ares_corebundle_task_estimated_time_to_convert_minute');
+        
+        var timeHour = hourDropdown.val() < 10 ? '0' + hourDropdown.val() : hourDropdown.val();
+        var timeMinute = minuteDropdown.val() < 10 ? '0' + minuteDropdown.val() : minuteDropdown.val();
+        
+        var time = timeHour + ':' + timeMinute + ':00';
+        
+        console.log(time);
+        
+        $('#ares_corebundle_task_estimated_time').val(timeToSeconds(time));
+        
+        return time;
+      };        
+      
+      //////////
+
+      var estimatedTimeInSeconds = $('#ares_corebundle_task_estimated_time').val();
+      var estimatedTime = secondsToTime(estimatedTimeInSeconds); 
+      
+    
+      
+      
+      
+      $('#ares_corebundle_task_estimated_time_to_convert_hour').on('change', function(e){
+        updateEstimatedTimeHiddenField();
+      });
+      
+      $('#ares_corebundle_task_estimated_time_to_convert_minute').on('change', function(e){
+        updateEstimatedTimeHiddenField();
+      });      
+      
+      
+      
+
+      console.log(estimatedTime);
+    });
+  </script>
+{% endblock %}
