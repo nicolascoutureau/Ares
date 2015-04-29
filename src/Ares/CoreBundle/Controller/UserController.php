@@ -33,7 +33,7 @@ class UserController extends Controller
       $arrayIdTask[] = $utPerso[0]->getTask()->getId();
     }
 
-    $usertasks4FullTime = $em->getRepository('AresCoreBundle:Usertask')->req2($arrayIdTask);
+    $usertasks4FullTime = $em->getRepository('AresCoreBundle:Usertask')->getUsertasksByTaskId($arrayIdTask);
 
     foreach ($usertasks as $key => $value) {
       $usertasks[$key]['totaltime'] = $usertasks4FullTime[$key]['totaltime'];

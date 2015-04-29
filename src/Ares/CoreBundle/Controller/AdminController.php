@@ -19,10 +19,10 @@ class AdminController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $tasks = $em->getRepository('AresCoreBundle:Task')->findBy(array(), array('deadline' => 'ASC'));
-
+        $usertasks = $em->getRepository('AresCoreBundle:Task')->getAllUsertasks();
+        
         return $this->render('AresCoreBundle:Admin:index.html.twig', array(
-            'tasks' => $tasks
+            'usertasks' => $usertasks
         ));
     }
 
@@ -187,9 +187,9 @@ class AdminController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
-        if ($form->isValid()) {
+//        $form = $this->createDeleteForm($id);
+//        $form->handleRequest($request);
+//        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('AresCoreBundle:Task')->find($id);
             if (!$entity) {
@@ -200,7 +200,7 @@ class AdminController extends Controller
             $this->get('session')->getFlashBag()->add(
                 'notice', 'La tâche a bien été supprimée!'
             );
-        }
+//        }
         return $this->redirect($this->generateUrl('admin_task_index'));
     }
 
