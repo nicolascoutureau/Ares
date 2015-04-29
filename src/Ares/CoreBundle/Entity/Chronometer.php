@@ -19,7 +19,7 @@ class Chronometer
     private $id;
     /**
      * @ORM\ManyToOne(targetEntity="Ares\CoreBundle\Entity\Usertask", inversedBy="chronometers")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $usertask;
     /**
