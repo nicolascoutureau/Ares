@@ -13,9 +13,9 @@
             <th>Description</th>
             <th>Échéance</th>
             <th>Temps estimé</th>
-            <th>Temps passé PERSO</th>
-            <th>Temps passé TOTAL</th>
-            <th>Gestion du temps</th>
+            <th>Temps PERSO</th>
+            <th>Temps TOTAL</th>
+            <th>%</th>
             <th>État</th>
             <th>Utilisateurs</th>
             <th>Actions</th>
@@ -26,14 +26,14 @@
             
             <tr class="taskRow " data-taskId="{{ usertask[0].task.id }}">
               <td>{{ usertask[0].task.id }}</td>
-              <td>{{ usertask[0].task.name }}</td>
+              <td class="taskName">{{ usertask[0].task.name }}</td>
               <td>{{ usertask[0].task.description | truncate(20, true, '...') }}</td>
-              <td>{{ usertask[0].task.deadline | date('d/m/Y') }}</td>
-              <td class="tableEstimatedTime" data-time="{{ usertask[0].task.estimatedtime }}">{{ usertask[0].task.estimatedtime | toTime }}</td>
-              <td class="tableTimePerso">
+              <td style="font-weight: bold; color: #333;">{{ usertask[0].task.deadline | date('d/m/Y') }}</td>
+              <td style="font-weight: bold; " class="tableEstimatedTime" data-time="{{ usertask[0].task.estimatedtime }}">{{ usertask[0].task.estimatedtime | toTime }}</td>
+              <td class="tableTimePerso" style="color: #555;">
                 {{ usertask['persotime'] | toTime }}
               </td>
-              <td class="tableTime">
+              <td class="tableTime" style="color: #555;">
                 {{ usertask['totaltime'] | toTime }}
               </td>
               <td class="timePercent">
@@ -55,6 +55,11 @@
           {% endfor %}
         </tbody>
       </table>
+            <style>
+              .table thead tr th {
+                vertical-align: top;
+              }
+            </style>         
     {% endblock %}
   {% endembed %}
 
@@ -93,6 +98,8 @@
       filter:progid:DXImageTransform.Microsoft.Shadow(color=#cfcfcf, Direction=134, Strength=10);
       cursor: move;
       border: 1px solid lightgrey;
+      z-index: 99999999;
+      top: 0;
     }
 
     .labelTempsChrono {
@@ -192,7 +199,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 
       var tasksNotifiedArray = new Array();
       
-      function notifyMe(percentExtraTime) {
+      function notifyMe(percentExtraTime, taskName) {
         // Let's check if the browser supports notifications
         if (!("Notification" in window)) {
           alert("This browser does not support desktop notification");
@@ -200,14 +207,14 @@ function number_format(number, decimals, dec_point, thousands_sep) {
         // Let's check if the user is okay to get some notification
         else if (Notification.permission === "granted") {
           // If it's okay let's create a notification
-          var notification = new Notification("Temps estimé dépassé de " + percentExtraTime + "%!");
+          var notification = new Notification(taskName + " \n Temps estimé dépassé de " + percentExtraTime + "%!");
         }
         // Otherwise, we need to ask the user for permission
         else if (Notification.permission !== 'denied') {
           Notification.requestPermission(function (permission) {
             // If the user is okay, let's create a notification
             if (permission === "granted") {
-              var notification = new Notification("Hi there!");
+              var notification = new Notification(taskName + " \n Temps estimé dépassé de " + percentExtraTime + "%!");
             }
           });
         }
@@ -340,8 +347,9 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 {#        console.log(Number(estimatedTime) + (20 * Number(estimatedTime) / 100));#}
         
         if (percentExtraTime > 20 && tasksNotifiedArray.indexOf($('#selectTask').val()) === -1) {
+          var taskName = $(taskRowSelected).find('.taskName').html();
 
-          notifyMe(percentExtraTime);
+          notifyMe(percentExtraTime, taskName);
           tasksNotifiedArray.push($('#selectTask').val());
 {#          tempsDepasse = true;#}
         }
@@ -431,9 +439,16 @@ function number_format(number, decimals, dec_point, thousands_sep) {
         return(parseInt(time[0] * 3600) + parseInt(time[1] * 60) + parseInt(time[2]));
       };
 
+        $('.table').DataTable({
+          "aaSorting": [[ 3, "desc" ]]
+        }); 
 
 
     });
+    
+    
+    
+    
   </script>
 
 {% endblock %}
