@@ -49,6 +49,34 @@ class AdminController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            
+            
+            
+            
+            //Gere l'assignation
+            $postArray = $request->request->get('ares_corebundle_task');
+            
+            
+            if (isset($postArray['users'])) {
+              $selectedUsers = $postArray['users'];
+            }
+            
+            
+            $assigned = false;
+            
+            if (isset($selectedUsers) && !empty($selectedUsers)) {
+              $assigned = true;
+            }              
+            
+            if ($entity->getState() != 'Completed' && $entity->getState() != 'Canceled') {
+              if ($assigned) {
+                $entity->setState('Assigned');
+              } else {
+                $entity->setState('Not Assigned');
+              }              
+            }            
+            
+            
             $em->persist($entity);
             $em->flush();
             $this->get('session')->getFlashBag()->add(
@@ -152,12 +180,15 @@ class AdminController extends Controller
                     $user = $usertask->getUser();
                     if (isset($selectedUsers) && in_array($user->getId(), $selectedUsers)) {
                         $usertask->setAssignation(true);
-                        $assigned = true;
                     } else {
                         $usertask->setAssignation(false);
                     }
                 }
             } 
+            
+            if (isset($selectedUsers) && !empty($selectedUsers)) {
+              $assigned = true;
+            }
             
             
             if ($entityTask->getState() != 'Completed' && $entityTask->getState() != 'Canceled') {

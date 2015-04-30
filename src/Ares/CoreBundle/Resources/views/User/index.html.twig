@@ -50,7 +50,13 @@
                   {{ user.username | title }}{% if loop.last is same as(false) %},{% endif %}
                 {% endfor %}
               </td>
-              <td><a href="#" class="selectBtn">Select task</a></td>
+              <td><a href="#" class="selectBtn btn btn-primary btn-round btn-xs">&nbsp; SÉLECTIONNER &nbsp;</a></td>
+              
+              
+              
+              
+              
+              
             </tr>
           {% endfor %}
         </tbody>
@@ -64,10 +70,10 @@
   {% endembed %}
 
   <div class="chronometer" id="draggable">
-    <h2>Chronometer</h2>
+    <h2>Chronomètre</h2>
     <div style="margin: 10px 0;">
       <select id="selectTask" class="form-control"> 
-        <option value="">Select a task</option>
+        <option value="">Sélectionner une tâche</option>
         {% for usertask in usertasks %}    
           <option value="{{ usertask[0].task.id }}">{{ usertask[0].task.name }}</option>
         {% endfor %}

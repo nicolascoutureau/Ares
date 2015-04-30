@@ -24,7 +24,11 @@ class TaskType extends AbstractType
                 ],
                 'label' => 'Échéance'
             ))
-            ->add('estimated_time','hidden')
+            ->add('estimated_time', null, array(
+                'required' => true,
+                'attr' => ['class' => 'hide'],
+                'label' => ' '
+                ))
             ->add('estimated_time_to_convert','time', array('mapped' => false, 'label' => 'Temps estimé'))    
             ->add('state', 'choice', array(
                 'choices'   => array(

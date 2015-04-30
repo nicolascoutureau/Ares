@@ -54,7 +54,7 @@ class Task
   private $datecreated;
 
   /**
-   * @ORM\Column(name="estimated_time", type="integer")
+   * @ORM\Column(name="estimated_time", type="integer", nullable=false)
    */
   private $estimated_time;
 
