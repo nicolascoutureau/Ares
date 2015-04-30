@@ -47,7 +47,7 @@
 
                 <form class="form-signin" action="{{ path("fos_user_security_check") }}" method="post">
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-                    <h2 class="form-signin-heading">sign in now</h2>
+                    <h2 class="form-signin-heading"><img src="{{ asset('bundles/arescore/images/logo_ares.png') }}" alt=""/></h2>
                     <div class="login-wrap">
                         <div class="user-login-info">
                             <input type="text" class="form-control" name="_username" placeholder="Identifiant" autofocus>
